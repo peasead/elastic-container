@@ -51,7 +51,7 @@ kibana: Up 16 seconds
 elasticsearch: Up 17 seconds
 ```
 
-### Modifying
+## Modifying
 
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
