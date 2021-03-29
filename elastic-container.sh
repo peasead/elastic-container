@@ -7,14 +7,14 @@
 
 if [ $1 == start ]
 then
-docker network create elk
-docker run -d --network elk --rm --name elasticsearch -p 9200:9200 -p 9300:9300 \
+docker network create elastic
+docker run -d --network elastic --rm --name elasticsearch -p 9200:9200 -p 9300:9300 \
 -e "discovery.type=single-node" \
 -e "xpack.security.enabled=true" \
 -e "xpack.security.authc.api_key.enabled=true" \
 -e "ELASTIC_PASSWORD=password" \
 docker.elastic.co/elasticsearch/elasticsearch:8.0.0-SNAPSHOT
-docker run -d --network elk --rm --name kibana -p 5601:5601 \
+docker run -d --network elastic --rm --name kibana -p 5601:5601 \
 -v $(pwd)/kibana.yml:/usr/share/kibana/config/kibana.yml \
 -e "ELASTICSEARCH_HOSTS=http://elasticsearch:9200" \
 -e "ELASTICSEARCH_USERNAME=elastic" \
@@ -26,7 +26,7 @@ if [ $1 == stop ]
 then
 docker stop elasticsearch
 docker stop kibana
-docker network rm elk
+docker network rm elastic
 
 else
 if [ $1 == status ]
