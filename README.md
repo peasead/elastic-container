@@ -53,14 +53,17 @@ elasticsearch: Up 17 seconds
 
 ## Questions
 
+1. But...why?
+To test data feeds, ingest pipelines, detection rules, Fleet configs...w/e. Something I could blow away fast but had the bare necessities.
+
 1. Why don't you use Docker Compose?  
 Old habbits.
 
-2. This is horrible, why can't you write better scripts?  
+1. This is horrible, why can't you write better scripts?  
 Function over beauty.
 
-3. I suppose I can use this, can I change the creds or stack version?  
+1. I suppose I can use this, can I change the creds or stack version?  
 Of course.
 
-4. Why did you use a mounted Kibana config but Elasticsearch environment variables?  
+1. Why did you use a mounted Kibana config but Elasticsearch environment variables?  
 I tried with Kibana variables, but they all didn't seem to work right and the config worked.
