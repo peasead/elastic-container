@@ -17,6 +17,7 @@ Running this will:
 
 ```
 sh elastic-container.sh start
+
 7963e312e00023539389d9176e971d6c4bede17f591195aa44864b815a723aaa
 1219144625de8a0b59e478d917b88ddff690fb8685a9ee6e54a2fa7cdfdf4073
 8c88d8f74d46e40c5b74963a641de1de422855163d8a146281a0cec03df4635a
@@ -32,6 +33,7 @@ Stopping this will:
 
 ```
 sh elastic-container.sh stop
+
 elasticsearch
 kibana
 elk
@@ -43,7 +45,19 @@ Return the status of the containers.
 
 ```
 sh elastic-container.sh status
+
 NAMES: STATUS
 kibana: Up 16 seconds
 elasticsearch: Up 17 seconds
 ```
+
+## Questions
+
+1. Why don't you use Docker Compose?
+Habbits.
+
+2. This is horrible, why can't you write better scripts?
+Function over beauty.
+
+3. I suppose I can use this, can I change the creds or stack version?
+Of course.
