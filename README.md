@@ -53,11 +53,11 @@ elasticsearch: Up 17 seconds
 
 ## Questions
 
-1. Why don't you use Docker Compose?
-Habbits.
+1. Why don't you use Docker Compose?  
+Old habbits.
 
-2. This is horrible, why can't you write better scripts?
+2. This is horrible, why can't you write better scripts?  
 Function over beauty.
 
-3. I suppose I can use this, can I change the creds or stack version?
+3. I suppose I can use this, can I change the creds or stack version?  
 Of course.
