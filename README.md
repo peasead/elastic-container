@@ -55,14 +55,17 @@ elasticsearch: Up 17 seconds
 
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
-ELASTIC_PASSWORD="${ELASTIC_PASSWORD:-password}"
-ELASTICSEARCH_URL="${ELASTICSEARCH_URL:-http://elasticsearch:9200}"
-STACK_VERSION="${STACK_VERSION:-7.12.0}"
+ELASTIC_PASSWORD="password"
+ELASTICSEARCH_URL="http://elasticsearch:9200"
+STACK_VERSION="7.12.0"
 ```
 
-If you want to change the default values, simply replace whatever is appropriate after the `:-` in the variable declaration. For example, if you wanted to change the `ELASTIC_PASSWORD`, you'd do that like so `ELASTIC_PASSWORD="${ELASTIC_PASSWORD:-changeme}"`.
+If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
 
-If you want to use different Elastic Stack versions, you can change those as well. Optional values are on Elastic's Docker hub and linked in the header of the shell script.
+If you want to use different Elastic Stack versions, you can change those as well. Optional values are on Elastic's Docker hub:
+
+- [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
+- [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 
 ## Questions
 
