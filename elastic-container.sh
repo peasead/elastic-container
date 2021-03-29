@@ -34,7 +34,7 @@ then
 docker ps -f "name=kibana" -f "name=elasticsearch" --format "table {{.Names}}: {{.Status}}"
 
 else
-echo "Proper syntax not used. Try ./elastic-docker {start,stop,status}"
+echo "Proper syntax not used. Try ./elastic-container {start,stop,status}"
 fi
 fi
 fi
