@@ -30,3 +30,11 @@ Stopping this will:
 ```
 sh elastic-container.sh stop
 ```
+
+### Status
+
+Return the status of the containers.
+
+```
+sh elastic-container.sh status
+```
