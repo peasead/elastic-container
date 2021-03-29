@@ -61,3 +61,6 @@ Function over beauty.
 
 3. I suppose I can use this, can I change the creds or stack version?  
 Of course.
+
+4. Why did you use a mounted Kibana config but Elasticsearch environment variables?  
+I tried with Kibana variables, but they all didn't seem to work right and the config worked.
