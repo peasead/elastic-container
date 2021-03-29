@@ -53,7 +53,7 @@ elasticsearch: Up 17 seconds
 
 ## Questions
 
-1. But...why?
+1. But...why?  
 To test data feeds, ingest pipelines, detection rules, Fleet configs...w/e. Something I could blow away fast but had the bare necessities.
 
 1. Why don't you use Docker Compose?  
