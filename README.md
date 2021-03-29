@@ -4,7 +4,7 @@ Stand up a simple Elastic container with Kibana, Fleet, and the Detection Engine
 ## Usage
 This uses default creds of `elastic:password` and is intended purely for rapid testing a local Elastic stack.
 
-There is zero security enabled and this should not be Internet exposed or use anywhere in production.
+There is zero security enabled and this should not be Internet exposed or used anywhere in production.
 
 There is zero saved data, everything is wiped when the containers are stopped. Again, not meant for anything but testing.
 
