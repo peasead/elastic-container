@@ -1,0 +1,4 @@
+server.host: "0.0.0.0"
+xpack.encryptedSavedObjects.encryptionKey: "thirty-two-or-more-random-characters"
+xpack.fleet.agents.tlsCheckDisabled: true
+xpack.security.enabled: true
