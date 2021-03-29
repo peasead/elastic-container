@@ -6,13 +6,10 @@
 # No data is retained!
 
 # Define variables
-ELASTIC_PASSWORD="${ELASTIC_PASSWORD:-password}"
-ELASTICSEARCH_URL="${ELASTICSEARCH_URL:-http://elasticsearch:9200}"
-STACK_VERSION="${STACK_VERSION:-7.12.0}"
-# Elasticsearch and Kibana version options
-# https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated
-# https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated
-# STACK_VERSION="${STACK_VERSION:-8.0.0-SNAPSHOT}"
+ELASTIC_PASSWORD="password"
+ELASTICSEARCH_URL="http://elasticsearch:9200"
+STACK_VERSION="7.12.0"
+# STACK_VERSION="8.0.0-SNAPSHOT"
 
 if [ $1 == start ]
 then
