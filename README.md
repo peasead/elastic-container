@@ -11,7 +11,7 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 ### Starting
 
 Running this will:
-- create a network called `elk`
+- create a network called `elastic`
 - download the 8.0.0 Elasticsearch and Kibana Docker containers
 - start Elasticsearch and Kibana containers w/all settings needed for Fleet and th Detection Engine
 
@@ -29,14 +29,14 @@ After a few minutes browse to http://localhost:5601 and log in with `elastic:pas
 Stopping this will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
-- delete the `elk` container network
+- delete the `elastic` container network
 
 ```
 sh elastic-container.sh stop
 
 elasticsearch
 kibana
-elk
+elastic
 ```
 
 ### Status
