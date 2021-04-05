@@ -11,9 +11,9 @@ ELASTICSEARCH_URL="http://elasticsearch:9200"
 STACK_VERSION="7.12.0"
 # STACK_VERSION="8.0.0-SNAPSHOT"
 
-if [ $1 == start ]
+if [ $1 == start ] 2> /dev/null
 then
-docker network create elastic
+docker network create elastic 2> /dev/null
 docker run -d --network elastic --rm --name elasticsearch -p 9200:9200 -p 9300:9300 \
 -e "discovery.type=single-node" \
 -e "xpack.security.enabled=true" \
@@ -28,14 +28,14 @@ docker run -d --network elastic --rm --name kibana -p 5601:5601 \
 docker.elastic.co/kibana/kibana:${STACK_VERSION}
 
 else
-if [ $1 == stop ]
+if [ $1 == stop ] 2> /dev/null
 then
-docker stop elasticsearch
-docker stop kibana
-docker network rm elastic
+docker stop elasticsearch 2> /dev/null
+docker stop kibana 2> /dev/null
+docker network rm elastic 2> /dev/null
 
 else
-if [ $1 == status ]
+if [ $1 == status ] 2> /dev/null
 then
 docker ps -f "name=kibana" -f "name=elasticsearch" --format "table {{.Names}}: {{.Status}}"
 
