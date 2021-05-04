@@ -12,7 +12,7 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 Running this will:
 - create a network called `elastic`
-- download the 7.12.0 Elasticsearch and Kibana Docker containers
+- download the Elasticsearch and Kibana Docker containers defined in the script
 - start Elasticsearch and Kibana containers w/all settings needed for Fleet and the Detection Engine
 
 ```
@@ -39,6 +39,18 @@ kibana
 elastic
 ```
 
+### Restarting
+
+Stopping this will:
+- restart the Elasticsearch and Kibana containers
+
+```
+$ sh elastic-container.sh restart
+
+elasticsearch
+kibana
+```
+
 ### Status
 
 Return the status of the containers.
@@ -57,7 +69,7 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.12.0"
+STACK_VERSION="7.12.1"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
