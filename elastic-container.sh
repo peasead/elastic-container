@@ -8,7 +8,7 @@
 # Define variables
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.12.0"
+STACK_VERSION="7.12.1"
 # STACK_VERSION="8.0.0-SNAPSHOT"
 
 if [ $1 == start ] 2> /dev/null
