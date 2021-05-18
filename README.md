@@ -57,7 +57,7 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.12.0"
+STACK_VERSION="7.12.1"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
