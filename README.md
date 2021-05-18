@@ -12,7 +12,7 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 Running this will:
 - create a network called `elastic`
-- download the 7.12.0 Elasticsearch and Kibana Docker containers
+- download the 7.12.1 Elasticsearch and Kibana Docker containers
 - start Elasticsearch and Kibana containers w/all settings needed for Fleet and the Detection Engine
 
 ```
