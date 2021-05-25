@@ -18,9 +18,10 @@ Running this will:
 ```
 $ sh elastic-container.sh start
 
-7963e312e00023539389d9176e971d6c4bede17f591195aa44864b815a723aaa
-1219144625de8a0b59e478d917b88ddff690fb8685a9ee6e54a2fa7cdfdf4073
-8c88d8f74d46e40c5b74963a641de1de422855163d8a146281a0cec03df4635a
+99e03383cf824cd2e04d061fcf59c057fc78616bb877929309f2e1db76e9ea73
+ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
+a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
+24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
 ```
 After a few minutes browse to http://localhost:5601 and log in with `elastic:password`.
 
@@ -61,8 +62,9 @@ Return the status of the containers.
 $ sh elastic-container.sh status
 
 NAMES: STATUS
-kibana: Up 16 seconds
-elasticsearch: Up 17 seconds
+fleet-server: Up 6 minutes
+kibana: Up 6 minutes
+elasticsearch: Up 6 minutes
 ```
 
 ## Modifying

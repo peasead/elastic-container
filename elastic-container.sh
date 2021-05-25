@@ -72,9 +72,9 @@ echo "Passphrase: ${ELASTIC_PASSWORD}"
 else
 if [ $1 == stop ] 2> /dev/null
 then
-docker stop elasticsearch 2> /dev/null
-docker stop kibana 2> /dev/null
 docker stop fleet-server 2> /dev/null
+docker stop kibana 2> /dev/null
+docker stop elasticsearch 2> /dev/null
 docker network rm elastic 2> /dev/null
 
 # Restart the Elastic containers
