@@ -12,12 +12,8 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 Running this will:
 - create a network called `elastic`
-<<<<<<< HEAD
-- download the Elasticsearch and Kibana Docker containers defined in the script
-=======
-- download the 7.12.1 Elasticsearch and Kibana Docker containers
->>>>>>> dabb6c5386681a50178850e7540bbf8cc0d77408
-- start Elasticsearch and Kibana containers w/all settings needed for Fleet and the Detection Engine
+- download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
+- start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
 
 ```
 $ sh elastic-container.sh start
@@ -38,21 +34,23 @@ Stopping this will:
 ```
 $ sh elastic-container.sh stop
 
-elasticsearch
+fleet-server
 kibana
+elasticsearch
 elastic
 ```
 
 ### Restarting
 
 Stopping this will:
-- restart the Elasticsearch and Kibana containers
+- restart the containers
 
 ```
 $ sh elastic-container.sh restart
 
 elasticsearch
 kibana
+fleet-server
 ```
 
 ### Status
@@ -73,7 +71,9 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.12.1"
+KIBANA_PASSWORD="password"
+KIBANA_URL="http://kibana:5601"
+STACK_VERSION="7.13.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
@@ -82,6 +82,7 @@ If you want to use different Elastic Stack versions, you can change those as wel
 
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
+- [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
 
 If you want to retain the data in Elasticsearch, remove the `--rm` from the `docker run` lines in `elastic-container.sh`. This is not recommended as there are no mounted volumes.
 
@@ -99,5 +100,5 @@ Function over beauty.
 1. I suppose I can use this, can I change the creds or stack version?  
 Of course.
 
-1. Why did you use a mounted Kibana config but Elasticsearch environment variables?  
-I tried with Kibana variables, but they all didn't seem to work right and the config worked.
+1. Elastic-Agent or Fleet Server, what's the difference?
+The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
