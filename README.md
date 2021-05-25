@@ -102,5 +102,5 @@ Function over beauty.
 1. I suppose I can use this, can I change the creds or stack version?  
 Of course.
 
-1. Elastic-Agent or Fleet Server, what's the difference?
+1. Elastic-Agent or Fleet Server, what's the difference?  
 The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
