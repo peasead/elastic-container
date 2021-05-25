@@ -1,17 +1,33 @@
 #!/bin/bash
+
+# Simple script to start an Elasticsearch and Kibana instance with Fleet and the Detection Engine. No data is retained. For information on customizing, see the Github repository.
+#
 # Usage:
-# "./elastic-container.sh start" to start the Elasticsearch node and connected Kibana instance.
-# "./elastic-container.sh stop" to stop the Elasticsearch node and connected Kibana instance.
-# "./elastic-container.sh stop" to restart the Elasticsearch node and connected Kibana instance.
-# "./elastic-container.sh status" to get the status of the Elasticsearch node and connected Kibana instance.
-# No data is retained!
+# sh elastic-container.sh {option}
+#
+# Options:
+# stage - download the Elasticsearch and Kibana nodes. This does not start them.
+# start - start the Elasticsearch node and connected Kibana instance.
+# stop - stop the Elasticsearch node and connected Kibana instance.
+# restart - restart the Elasticsearch node and connected Kibana instance.
+# status - get the status of the Elasticsearch node and connected Kibana instance.
+#
+# More information at https://github.com/peasead/elastic-container"
 
 # Define variables
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.12.1"
+STACK_VERSION="7.13.0"
 #STACK_VERSION="8.0.0-SNAPSHOT"
 
+Help
+
+if [ $1 == stage ] 2> /dev/null
+then
+docker pull docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+docker pull docker.elastic.co/kibana/kibana:${STACK_VERSION}
+
+else
 if [ $1 == start ] 2> /dev/null
 then
 docker network create elastic 2> /dev/null
@@ -47,7 +63,8 @@ then
 docker ps -f "name=kibana" -f "name=elasticsearch" --format "table {{.Names}}: {{.Status}}"
 
 else
-echo "Proper syntax not used. Try ./elastic-container {start,stop,restart,status}"
+echo "Proper syntax not used. Try ./elastic-container {stage,start,stop,restart,status}"
+fi
 fi
 fi
 fi
