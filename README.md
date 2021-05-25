@@ -12,7 +12,11 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 Running this will:
 - create a network called `elastic`
+<<<<<<< HEAD
 - download the Elasticsearch and Kibana Docker containers defined in the script
+=======
+- download the 7.12.1 Elasticsearch and Kibana Docker containers
+>>>>>>> dabb6c5386681a50178850e7540bbf8cc0d77408
 - start Elasticsearch and Kibana containers w/all settings needed for Fleet and the Detection Engine
 
 ```
@@ -78,6 +82,8 @@ If you want to use different Elastic Stack versions, you can change those as wel
 
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
+
+If you want to retain the data in Elasticsearch, remove the `--rm` from the `docker run` lines in `elastic-container.sh`. This is not recommended as there are no mounted volumes.
 
 ## Questions
 
