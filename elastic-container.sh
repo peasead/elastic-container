@@ -17,7 +17,7 @@
 # Define variables
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-STACK_VERSION="7.13.0"
+STACK_VERSION="7.12.1"
 #STACK_VERSION="8.0.0-SNAPSHOT"
 
 # Collect the Elastic and Kibana Docker images
