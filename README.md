@@ -75,7 +75,7 @@ ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
 KIBANA_PASSWORD="password"
 KIBANA_URL="http://kibana:5601"
-STACK_VERSION="7.13.0"
+STACK_VERSION="7.14.1"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
