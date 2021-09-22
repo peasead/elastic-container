@@ -67,6 +67,19 @@ kibana: Up 6 minutes
 elasticsearch: Up 6 minutes
 ```
 
+### Staging
+
+Download container images, but not start them.
+
+```
+$ sh elastic-container.sh stage
+
+7.15.0: Pulling from elasticsearch/elasticsearch
+e7bd69ff4774: Pull complete
+d0a0f12aaf30: Pull complete
+...
+```
+
 ## Modifying
 
 In `elastic-container.sh`, the variables are defined, any can be changed.
