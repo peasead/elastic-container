@@ -19,7 +19,7 @@ ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
 KIBANA_URL="http://kibana:5601"
 KIBANA_PASSWORD="password"
-STACK_VERSION="7.15.0"
+STACK_VERSION="7.15.1"
 #STACK_VERSION="8.0.0-SNAPSHOT"
 
 # Collect the Elastic, Kibana, and Elastic-Agent Docker images
@@ -72,6 +72,9 @@ echo "Passphrase: ${ELASTIC_PASSWORD}"
 else
 if [ $1 == stop ] 2> /dev/null
 then
+echo "#####"
+echo "Stopping and removing all Elastic Stack components."
+echo "#####"
 docker stop fleet-server 2> /dev/null
 docker stop kibana 2> /dev/null
 docker stop elasticsearch 2> /dev/null
@@ -81,6 +84,9 @@ docker network rm elastic 2> /dev/null
 else
 if [ $1 == restart ] 2> /dev/null
 then
+echo "#####"
+echo "Restarting all Elastic Stack components."
+echo "#####"
 docker restart elasticsearch 2> /dev/null
 docker restart kibana 2> /dev/null
 docker restart fleet-server 2> /dev/null
