@@ -19,7 +19,7 @@ ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
 KIBANA_URL="http://kibana:5601"
 KIBANA_PASSWORD="password"
-STACK_VERSION="7.16.0"
+STACK_VERSION="7.16.1"
 
 # Collect the Elastic, Kibana, and Elastic-Agent Docker images
 if [ $1 == stage ] 2> /dev/null
