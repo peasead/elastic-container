@@ -17,9 +17,14 @@
 # Define variables
 ELASTIC_PASSWORD="password"
 ELASTICSEARCH_URL="http://elasticsearch:9200"
-KIBANA_URL="http://kibana:5601"
+KIBANA_URL="http://127.0.0.1:5601"
 KIBANA_PASSWORD="password"
 STACK_VERSION="7.16.3"
+KIBANA_AUTH='{"username" : "elastic" , "password" : "password"}'
+HEADERS=(
+    -H "kbn-version: ${STACK_VERSION}"
+    -H 'Content-Type: application/json'
+)
 
 # Collect the Elastic, Kibana, and Elastic-Agent Docker images
 if [ $1 == stage ] 2> /dev/null
@@ -62,10 +67,32 @@ docker run -d --network elastic --rm --name fleet-server -p 8220:8220 \
 -e "FLEET_SERVER_ENABLE=1" \
 -e "FLEET_SERVER_INSECURE_HTTP=1" \
 docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
+
+while true
+do
+  STATUS=$(curl -I "${KIBANA_URL}" 2>/dev/null | head -n 1 | cut -d$' ' -f2)
+  if [ "${STATUS}" == "302" ]; then
+    echo
+    echo "Kibana is up. Proceeding"
+    curl --silent "${HEADERS[@]}" -d "${KIBANA_AUTH}" --user "elastic:password" -XPOST "${KIBANA_URL}"/api/detection_engine/index &> /dev/null
+    curl --silent "${HEADERS[@]}" -d "${KIBANA_AUTH}" --user "elastic:password" -XPUT "${KIBANA_URL}"/api/detection_engine/rules/prepackaged &> /dev/null
+    echo
+    echo "Prebuilt Detections Enabled!";
+    break
+  else
+    echo
+    echo "Attempting to enable the Detection Engine and Prebuilt-Detection Rules"
+    echo
+    echo "Kibana still loading. Trying again in 40 seconds"
+  fi
+  sleep 40
+done
+
 echo
 echo "Browse to http://localhost:5601"
 echo "Username: elastic"
 echo "Passphrase: ${ELASTIC_PASSWORD}"
+echo
 
 # Stop and remove the Elastic containers and network
 else
