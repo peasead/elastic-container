@@ -101,7 +101,6 @@ shift $((OPTIND - 1))
 
 [ "${1:-}" = "--" ] && shift
 
-# Catches left overs with splat, defaults to help
 ACTION="${*:-help}"
 
 if [ $verbose -eq 1 ]; then
