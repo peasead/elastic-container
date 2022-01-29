@@ -153,6 +153,7 @@ case "${ACTION}" in
     -e "FLEET_SERVER_INSECURE_HTTP=1" \
     docker.elastic.co/beats/elastic-agent:${STACK_VERSION} 1>&3 2>&3
 
+# Runs the Detection Engine and Prebuilt Rules function created above
   configure_kbn
 
   echo
