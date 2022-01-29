@@ -27,6 +27,7 @@ HEADERS=(
   -H 'Content-Type: application/json'
 )
 
+# Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
   usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
