@@ -86,7 +86,6 @@ configure_kbn() {
 # Logic to enable the verbose output if needed
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
-# Initialize our own variables:
 verbose=0
 
 while getopts "v" opt; do
