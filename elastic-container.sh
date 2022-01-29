@@ -83,7 +83,7 @@ configure_kbn() {
   [ $i -eq 0 ] && echo "Exceeded MAXTRIES (${MAXTRIES}) to setup detection engine." && exit 1
 }
 
-# A POSIX variable
+# Logic to enable the verbose output if needed
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
