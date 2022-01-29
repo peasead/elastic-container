@@ -45,6 +45,7 @@ usage() {
 EOF
 }
 
+# Create a function to enable the Detection Engine and load prebuilt rules in Kibana
 configure_kbn() {
   MAXTRIES=15
   i=${MAXTRIES}
