@@ -21,6 +21,7 @@ ELASTICSEARCH_URL="http://elasticsearch:9200"
 LOCAL_ES_URL="http://127.0.0.1:9200"
 KIBANA_URL="http://kibana:5601"
 LOCAL_KBN_URL="http://127.0.0.1:5601"
+FLEET_URL="http://fleet-server:8220"
 STACK_VERSION="7.16.3"
 HEADERS=(
   -H "kbn-version: ${STACK_VERSION}"
@@ -106,10 +107,12 @@ create_fleet_usr() {
 } &> /dev/null
 
 configure_fleet() {
-  printf '{"kibana_urls": ["%s"]}' "${LOCAL_KBN_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${KIBANA_URL}/api/fleet/settings" -d @- | jq
+  printf '{"kibana_urls": ["%s"]}' "${KIBANA_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${KIBANA_URL}/api/fleet/settings" -d @- | jq
+  printf '{"fleet_server_hosts": ["%s"]}' "${FLEET_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
 
     OUTPUT_ID="$(curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XGET "${LOCAL_KBN_URL}/api/fleet/outputs" | jq --raw-output '.items[] | select(.name == "default") | .id')"
-    printf '{"hosts": ["%s"]}' "${LOCAL_ES_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/fleet/outputs/${OUTPUT_ID}" -d @- | jq
+    printf '{"hosts": ["%s"]}' "${ELASTICSEARCH_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/fleet/outputs/${OUTPUT_ID}" -d @- | jq
+
 } &> /dev/null
 
 # Logic to enable the verbose output if needed
