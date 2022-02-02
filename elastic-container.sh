@@ -22,7 +22,7 @@ LOCAL_ES_URL="http://127.0.0.1:9200"
 KIBANA_URL="http://kibana:5601"
 LOCAL_KBN_URL="http://127.0.0.1:5601"
 FLEET_URL="http://fleet-server:8220"
-STACK_VERSION="7.16.3"
+STACK_VERSION="7.17.0"
 HEADERS=(
   -H "kbn-version: ${STACK_VERSION}"
   -H "kbn-xsrf: kibana"
