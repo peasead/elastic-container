@@ -1,6 +1,16 @@
 # Elastic Container
 
-Stand up a simple Elastic container with Kibana, Fleet, and the Detection Engine
+Stand up a simple Elastic container with Kibana, Fleet, and the Detection Engine.
+
+## Requirements
+
+Requirements are minimal: \*NIX or macOS, [Docker](https://docs.docker.com/get-docker/), [jq](https://stedolan.github.io/jq/download/), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+You can use the links above, other methods you prefer, or if you're using macOS (and have [Homebrew](https://brew.sh/))
+
+```
+brew install docker jq git
+```
 
 ## Usage
 
@@ -18,7 +28,7 @@ Running this will:
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
 
 ```
-$ sh elastic-container.sh start
+$ ./elastic-container.sh start
 
 99e03383cf824cd2e04d061fcf59c057fc78616bb877929309f2e1db76e9ea73
 ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
@@ -35,7 +45,7 @@ Stopping this will:
 - delete the `elastic` container network
 
 ```
-$ sh elastic-container.sh stop
+$ ./elastic-container.sh stop
 
 fleet-server
 kibana
@@ -49,7 +59,7 @@ Stopping this will:
 - restart the containers
 
 ```
-$ sh elastic-container.sh restart
+$ ./elastic-container.sh restart
 
 elasticsearch
 kibana
@@ -61,7 +71,7 @@ fleet-server
 Return the status of the containers.
 
 ```
-$ sh elastic-container.sh status
+$ ./elastic-container.sh status
 
 NAMES: STATUS
 fleet-server: Up 6 minutes
@@ -74,7 +84,7 @@ elasticsearch: Up 6 minutes
 Download container images, but not start them.
 
 ```
-$ sh elastic-container.sh stage
+$ ./elastic-container.sh stage
 
 7.15.0: Pulling from elasticsearch/elasticsearch
 e7bd69ff4774: Pull complete
