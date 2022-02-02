@@ -3,7 +3,7 @@
 # Simple script to start an Elasticsearch and Kibana instance with Fleet and the Detection Engine. No data is retained. For information on customizing, see the Github repository.
 #
 # Usage:
-# sh elastic-container.sh [OPTION]
+# ./elastic-container.sh [OPTION]
 #
 # Options:
 # stage - download the Elasticsearch, Kibana, and Elastic-Agent Docker images. This does not start them.
