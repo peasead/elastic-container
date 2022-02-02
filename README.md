@@ -1,6 +1,6 @@
 # Elastic Container
 
-Stand up a simple Elastic container with Kibana, Fleet, and the Detection Engine.
+Stand up simple Elastic containers with Kibana, Fleet, and the Detection Engine.
 
 ## Requirements
 
