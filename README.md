@@ -87,10 +87,8 @@ d0a0f12aaf30: Pull complete
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
-ELASTICSEARCH_URL="http://elasticsearch:9200"
 KIBANA_PASSWORD="password"
-KIBANA_URL="http://kibana:5601"
-STACK_VERSION="7.15.0"
+STACK_VERSION="7.17.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
