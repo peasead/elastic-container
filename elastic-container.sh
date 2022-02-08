@@ -3,7 +3,7 @@
 # Simple script to start an Elasticsearch and Kibana instance with Fleet and the Detection Engine. No data is retained. For information on customizing, see the Github repository.
 #
 # Usage:
-# sh elastic-container.sh [OPTION]
+# ./elastic-container.sh [OPTION]
 #
 # Options:
 # stage - download the Elasticsearch, Kibana, and Elastic-Agent Docker images. This does not start them.
@@ -87,34 +87,6 @@ configure_kbn() {
   [ $i -eq 0 ] && echo "Exceeded MAXTRIES (${MAXTRIES}) to setup detection engine." && exit 1
 }
 
-setup_fleet() {
-  curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPOST "${LOCAL_KBN_URL}/api/fleet/setup" | jq
-} &> /dev/null
-
-create_fleet_usr() {
-  printf '{"forceRecreate": "true"}' | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPOST "${LOCAL_KBN_URL}/api/fleet/agents/setup" -d @- | jq
-    attempt_counter=0
-    max_attempts=5
-    until [ "$(curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XGET "${LOCAL_KBN_URL}/api/fleet/agents/setup" | jq -c 'select(.isReady==true)' | wc -l)" -gt 0 ]; do
-        if [ ${attempt_counter} -eq ${max_attempts} ];then
-            echo "Max attempts reached"
-            exit 1
-        fi
-        printf '.'
-        attempt_counter=$((attempt_counter+1))
-        sleep 5
-    done
-} &> /dev/null
-
-configure_fleet() {
-  printf '{"kibana_urls": ["%s"]}' "${KIBANA_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${KIBANA_URL}/api/fleet/settings" -d @- | jq
-  printf '{"fleet_server_hosts": ["%s"]}' "${FLEET_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
-
-    OUTPUT_ID="$(curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XGET "${LOCAL_KBN_URL}/api/fleet/outputs" | jq --raw-output '.items[] | select(.name == "default") | .id')"
-    printf '{"hosts": ["%s"]}' "${ELASTICSEARCH_URL}" | curl --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/fleet/outputs/${OUTPUT_ID}" -d @- | jq
-
-} &> /dev/null
-
 # Logic to enable the verbose output if needed
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
@@ -181,27 +153,15 @@ case "${ACTION}" in
     -e "ELASTICSEARCH_USERNAME=elastic" \
     -e "ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}" \
     -e "KIBANA_FLEET_SETUP=1" \
-    -e "FLEET_SERVER_ENABLE=1" \
+    -e "FLEET_ENROLL=1" \
     -e "FLEET_SERVER_INSECURE_HTTP=1" \
+    -e "FLEET_SERVER_ENABLE=true" \
+    -e "FLEET_SERVER_ELASTICSEARCH_HOST=${ELASTICSEARCH_URL}" \
+    -e "FLEET_URL=${FLEET_URL}" \
     docker.elastic.co/beats/elastic-agent:${STACK_VERSION} 1>&3 2>&3
 
 # Enables the Detection Engine and Prebuilt Rules function created above
   configure_kbn
-
-# Setup Fleet
-echo
-echo "Setting up Fleet"
-  setup_fleet
-
-# Create the Fleet User
-echo
-echo "Creating Fleet User"
-  create_fleet_usr
-
-# Configure Fleet Output
-echo
-echo "Configuring Fleet"
-  configure_fleet
 
   echo
   echo "Browse to http://localhost:5601"
