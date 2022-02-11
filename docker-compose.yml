@@ -3,6 +3,7 @@ version: "2.2"
 services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    container_name: elasticsearch-security-setup
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
     user: "0"
