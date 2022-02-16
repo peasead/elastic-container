@@ -136,6 +136,25 @@ services:
       timeout: 10s
       retries: 120
 
+  # fleet-server:
+  #     depends_on:
+  #       kibana:
+  #         condition: service_healthy
+  #       elasticsearch:
+  #         condition: service_healthy
+  #     image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
+  #     container_name: elastic-agent
+  #     restart: always
+  #     user: root
+  #     environment:
+  #       - FLEET_ENROLLMENT_TOKEN={token}
+  #       - FLEET_ENROLL=1
+  #       - FLEET_URL=http://elastic-agent:8220
+  #       - FLEET_SERVER_ENABLE=true
+  #       - FLEET_SERVER_ELASTICSEARCH_HOST=https://localhost:9200
+  #       - FLEET_SERVER_SERVICE_TOKEN={token}
+  #       - FLEET_SERVER_INSECURE_HTTP=1
+
 volumes:
   certs:
     driver: local
