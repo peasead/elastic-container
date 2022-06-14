@@ -105,10 +105,10 @@ case "${ACTION}" in
 
   configure_kbn 1>&2 2>&3
 
-  echo "Waiting 40 seconds for Fleet Server setup and configuration"
+  echo "Waiting 45 seconds for Fleet Server setup and configuration"
   echo
 
-  sleep 40
+  sleep 45
 
   echo "Browse to https://localhost:5601"
   echo "Username: ${ELASTIC_USERNAME}"

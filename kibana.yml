@@ -7,6 +7,8 @@ xpack.fleet.packages:
     version: latest
   - name: windows
     version: latest
+  - name: endpoint
+    version: latest
 xpack.fleet.agentPolicies:
   - name: Fleet-Server-Policy
     id: fleet-server-policy
@@ -30,6 +32,10 @@ xpack.fleet.agentPolicies:
         id: default-windows
         package: 
           name: windows
+      - name: endpoint
+        id: default-endpoint
+        package: 
+          name: endpoint
   - name: Linux-Agent-Policy
     id: linux-agent-policy
     namespace: default
@@ -41,6 +47,10 @@ xpack.fleet.agentPolicies:
         id: default-system
         package:
           name: system
+      - name: endpoint
+        id: default-endpoint
+        package: 
+          name: endpoint
   - name: MacOS-Agent-Policy
     id: macos-agent-policy
     namespace: default
@@ -52,5 +62,9 @@ xpack.fleet.agentPolicies:
         id: default-system
         package:
           name: system
+      - name: endpoint
+        id: default-endpoint
+        package: 
+          name: endpoint
 
 
