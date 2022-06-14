@@ -151,7 +151,7 @@ services:
       volumes:
         - certs:/certs
       ports:
-        - 8220:8220
+        - ${FLEET_PORT}:8220
       restart: always
       user: root
       environment:
