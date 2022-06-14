@@ -13,8 +13,9 @@ usage() {
   usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
   actions:
     stage     downloads all necessary images to local storage
-    start     creates network and configures containers to run
-    stop      stops the containers created and removes the network
+    start     creates network and starts containers 
+    stop      stops running containers without removing them 
+    destroy   stops and removes the containers, the network and volumes created
     restart   simply restarts all the stack containers
     status    check the status of the stack containers
     help      print this message
@@ -100,7 +101,7 @@ case "${ACTION}" in
 "start")
   echo "Starting Elastic Stack network and containers"
 
-  docker-compose up -d 
+  docker-compose up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
@@ -116,8 +117,14 @@ case "${ACTION}" in
   ;;
 
 "stop")
+  echo "Stopping running containers."
+  
+  docker-compose stop
+  ;;
+
+"destroy")
   echo "#####"
-  echo "Stopping and removing all Elastic Stack components."
+  echo "Stopping and removing the containers, network and volumes created."
   echo "#####"
   docker-compose down -v
   ;;
