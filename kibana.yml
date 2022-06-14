@@ -3,11 +3,54 @@ server.host: "0.0.0.0"
 xpack.fleet.packages:
   - name: fleet_server
     version: latest
+  - name: system
+    version: latest
+  - name: windows
+    version: latest
 xpack.fleet.agentPolicies:
-  - name: Fleet Server policy
+  - name: Fleet-Server-Policy
     id: fleet-server-policy
     namespace: default
     package_policies:
       - name: fleet_server-1
         package:
           name: fleet_server
+  - name: Windows-Agent-Policy
+    id: windows-agent-policy
+    namespace: default
+    monitoring_enabled:
+      - logs
+      - metrics
+    package_policies:
+      - name: system
+        id: default-system
+        package:
+          name: system
+      - name: windows
+        id: default-windows
+        package: 
+          name: windows
+  - name: Linux-Agent-Policy
+    id: linux-agent-policy
+    namespace: default
+    monitoring_enabled:
+      - logs
+      - metrics
+    package_policies:
+      - name: system
+        id: default-system
+        package:
+          name: system
+  - name: MacOS-Agent-Policy
+    id: macos-agent-policy
+    namespace: default
+    monitoring_enabled:
+      - logs
+      - metrics
+    package_policies:
+      - name: system
+        id: default-system
+        package:
+          name: system
+
+
