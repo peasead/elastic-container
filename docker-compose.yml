@@ -149,7 +149,9 @@ services:
       image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
       container_name: elastic-agent
       volumes:
-      - certs:/certs
+        - certs:/certs
+      ports:
+        - 8220:8220
       restart: always
       user: root
       environment:
