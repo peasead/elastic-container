@@ -31,15 +31,15 @@ services:
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es02\n"\
+          "  - name: kibana\n"\
           "    dns:\n"\
-          "      - es02\n"\
+          "      - kibana\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
-          "  - name: es03\n"\
+          "  - name: fleet-server\n"\
           "    dns:\n"\
-          "      - es03\n"\
+          "      - fleet-server\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -120,40 +120,58 @@ services:
     ports:
       - ${KIBANA_PORT}:5601
     environment:
-      - SERVERNAME=kibana
+      - SERVER_NAME=kibana
       - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - SERVER_SSL_ENABLED=true
+      - SERVER_SSL_CERTIFICATE=config/certs/kibana/kibana.crt
+      - SERVER_SSL_KEY=config/certs/kibana/kibana.key
+      - SERVER_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
     mem_limit: ${MEM_LIMIT}
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "curl -I -s --cacert config/certs/ca/ca.crt https://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
         ]
       interval: 10s
       timeout: 10s
       retries: 120
 
-  # fleet-server:
-  #     depends_on:
-  #       kibana:
-  #         condition: service_healthy
-  #       elasticsearch:
-  #         condition: service_healthy
-  #     image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
-  #     container_name: elastic-agent
-  #     restart: always
-  #     user: root
-  #     environment:
-  #       - FLEET_ENROLLMENT_TOKEN={token}
-  #       - FLEET_ENROLL=1
-  #       - FLEET_URL=http://elastic-agent:8220
-  #       - FLEET_SERVER_ENABLE=true
-  #       - FLEET_SERVER_ELASTICSEARCH_HOST=https://localhost:9200
-  #       - FLEET_SERVER_SERVICE_TOKEN={token}
-  #       - FLEET_SERVER_INSECURE_HTTP=1
+  fleet-server:
+      depends_on:
+        kibana:
+          condition: service_healthy
+        elasticsearch:
+          condition: service_healthy
+      image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
+      container_name: elastic-agent
+      volumes:
+      - certs:/certs
+      restart: always
+      user: root
+      environment:
+        - FLEET_ENROLL=1
+        # - FLEET_SERVER_INSECURE_HTTP=1
+        # - FLEET_INSECURE=1
+        # - FLEET_SERVER_ELASTICSEARCH_INSECURE=1
+        - FLEET_SERVER_POLICY_ID=fleet-server-policy
+        - FLEET_SERVER_ENABLE=1
+        - KIBANA_FLEET_SETUP=1
+        # - FLEET_SERVER_ELASTICSEARCH_INSECURE=1
+        - KIBANA_HOST=https://kibana:5601
+        - FLEET_URL=https://fleet-server:8220
+        - FLEET_SERVER_ELASTICSEARCH_HOST=https://elasticsearch:9200
+        - KIBANA_FLEET_USERNAME=elastic
+        - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD}
+        - FLEET_SERVER_CERT=/certs/fleet-server/fleet-server.crt
+        - FLEET_SERVER_CERT_KEY=/certs/fleet-server/fleet-server.key
+        - FLEET_SERVER_ELASTICSEARCH_CA=/certs/ca/ca.crt
+        - KIBANA_FLEET_CA=/certs/ca/ca.crt
+        # - FLEET_SERVER_SERVICE_TOKEN=${SERVICE_TOKEN}
+        # - FLEET_ENROLLMENT_TOKEN=${ENROLLMENT_TOKEN}
 
 volumes:
   certs:
