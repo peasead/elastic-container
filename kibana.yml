@@ -1,3 +1,4 @@
+telemetry.enabled: "false"
 xpack.encryptedSavedObjects.encryptionKey: "thirty-two-or-more-random-characters"
 server.host: "0.0.0.0"
 xpack.fleet.packages:
