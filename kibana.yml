@@ -26,7 +26,7 @@ xpack.fleet.agentPolicies:
       - metrics
     package_policies:
       - name: system
-        id: default-system
+        id: default-system1
         package:
           name: system
       - name: windows
@@ -34,7 +34,7 @@ xpack.fleet.agentPolicies:
         package: 
           name: windows
       - name: endpoint
-        id: default-endpoint
+        id: default-endpoint1
         package: 
           name: endpoint
   - name: Linux-Agent-Policy
@@ -45,11 +45,11 @@ xpack.fleet.agentPolicies:
       - metrics
     package_policies:
       - name: system
-        id: default-system
+        id: default-system2
         package:
           name: system
       - name: endpoint
-        id: default-endpoint
+        id: default-endpoint2
         package: 
           name: endpoint
   - name: MacOS-Agent-Policy
@@ -60,11 +60,11 @@ xpack.fleet.agentPolicies:
       - metrics
     package_policies:
       - name: system
-        id: default-system
+        id: default-system3
         package:
           name: system
       - name: endpoint
-        id: default-endpoint
+        id: default-endpoint3
         package: 
           name: endpoint
 
