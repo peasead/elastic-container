@@ -81,7 +81,7 @@ get_host_ip() {
 }
 
 set_fleet_values() {
-  fingerprint=$(echo | openssl s_client -connect ${LOCAL_ES_URL}:9200 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | awk -F= '$1 ~ /^SHA256/ { print $2 }' | tr -d :)
+  fingerprint=$(echo | openssl s_client -connect ${LOCAL_ES_URL} 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | awk -F= '$1 ~ /^SHA256/ { print $2 }' | tr -d :)
   printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:8220" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
   printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
   printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
