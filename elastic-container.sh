@@ -139,6 +139,7 @@ case "${ACTION}" in
 
   echo "Populating Fleet Settings"
   set_fleet_values 1>&2 
+  echo
 
   echo "READY"
   echo "Browse to https://localhost:5601"
