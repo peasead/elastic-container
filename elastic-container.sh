@@ -81,11 +81,11 @@ get_host_ip() {
 }
 
 set_fleet_values() {
-  fingerprint=$(echo | openssl s_client -connect ${LOCAL_ES_URL}:9200 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | awk -F= '$1 ~ /^SHA256/ { print $2 }' | tr -d :)
-  printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:8220" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
-  printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
-  printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
-  printf '{"config_yaml": "%s"}' "ssl.verification.mode: certificate" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
+  fingerprint=$(echo | openssl s_client -connect 127.0.0.1:${ES_PORT} 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | awk -F= '$1 ~ /^SHA256/ { print $2 }' | tr -d :)
+  printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:${FLEET_PORT}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq 
+  printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
+  printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
+  printf '{"config_yaml": "%s"}' "ssl.verification.mode: certificate" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
 }
 
 # Logic to enable the verbose output if needed
@@ -132,13 +132,13 @@ case "${ACTION}" in
 
   configure_kbn 1>&2 2>&3
 
-  echo "Waiting 45 seconds for Fleet Server setup and configuration"
+  echo "Waiting 40 seconds for Fleet Server setup"
   echo
 
-  sleep 45
+  sleep 40
 
   echo "Populating Fleet Settings"
-  set_fleet_values 1>&2 
+  set_fleet_values > /dev/null 2>&1
   echo
 
   echo "READY"
