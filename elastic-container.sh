@@ -1,6 +1,10 @@
 #!/bin/bash -eu 
 set -o pipefail
+
+ipvar="0.0.0.0"
+
 . .env
+
 HEADERS=(
   -H "kbn-version: ${STACK_VERSION}"
   -H "kbn-xsrf: kibana"
@@ -63,6 +67,27 @@ configure_kbn() {
   [ $i -eq 0 ] && echo "Exceeded MAXTRIES (${MAXTRIES}) to setup detection engine." && exit 1 
   return 0
 }
+
+get_host_ip() {
+  echo
+  echo "What is your host ip address?"
+  echo "You can use ifconfig on MacOS to find it: ifconfig en0 | awk '\$1 == "inet" {print \$2}'"
+  echo "You can use hostname on Linux to find it: hostname -I"
+  echo "We will use this to populate the necessary variables needed to configure Fleet settings."
+
+  echo
+  read -p 'IP Address: ' ipvar
+  echo
+}
+
+set_fleet_values() {
+  fingerprint=$(echo | openssl s_client -connect ${LOCAL_ES_URL}:9200 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | awk -F= '$1 ~ /^SHA256/ { print $2 }' | tr -d :)
+  printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:8220" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
+  printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
+  printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
+  printf '{"config_yaml": "%s"}' "ssl.verification.mode: certificate" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
+}
+
 # Logic to enable the verbose output if needed
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
@@ -99,6 +124,8 @@ case "${ACTION}" in
   ;;
 
 "start")
+  get_host_ip
+
   echo "Starting Elastic Stack network and containers"
 
   docker-compose up -d --no-deps
@@ -110,6 +137,10 @@ case "${ACTION}" in
 
   sleep 45
 
+  echo "Populating Fleet Settings"
+  set_fleet_values 1>&2 
+
+  echo "READY"
   echo "Browse to https://localhost:5601"
   echo "Username: ${ELASTIC_USERNAME}"
   echo "Passphrase: ${ELASTIC_PASSWORD}"
