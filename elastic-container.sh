@@ -69,15 +69,12 @@ configure_kbn() {
 }
 
 get_host_ip() {
-  echo
-  echo "What is your host ip address?"
-  echo "You can use ifconfig on MacOS to find it: ifconfig en0 | awk '\$1 == "inet" {print \$2}'"
-  echo "You can use hostname on Linux to find it: hostname -I"
-  echo "We will use this to populate the necessary variables needed to configure Fleet settings."
-
-  echo
-  read -p 'IP Address: ' ipvar
-  echo
+  os=$(uname -s)
+  if [ ${os} == "Linux" ]; then
+    ipvar=$(hostname -I)
+  else
+    ipvar=$(ifconfig en0 | awk '$1 == "inet" {print $2}')
+  fi
 }
 
 set_fleet_values() {
