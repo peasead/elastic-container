@@ -71,7 +71,7 @@ configure_kbn() {
 get_host_ip() {
   os=$(uname -s)
   if [ ${os} == "Linux" ]; then
-    ipvar=$(hostname -I)
+    ipvar=$(hostname -I | awk '{ print $1}')
   else
     ipvar=$(ifconfig en0 | awk '$1 == "inet" {print $2}')
   fi
