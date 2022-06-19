@@ -138,7 +138,7 @@ case "${ACTION}" in
   set_fleet_values > /dev/null 2>&1
   echo
 
-  echo "READY"
+  echo "READY SET GO!"
   echo "Browse to https://localhost:5601"
   echo "Username: ${ELASTIC_USERNAME}"
   echo "Passphrase: ${ELASTIC_PASSWORD}"
