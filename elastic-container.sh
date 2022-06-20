@@ -127,7 +127,7 @@ case "${ACTION}" in
 
   docker-compose up -d --no-deps
 
-  configure_kbn > /dev/null 2>&1
+  configure_kbn 1>&2 2>&3
 
   echo "Waiting 40 seconds for Fleet Server setup"
   echo
