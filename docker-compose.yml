@@ -86,11 +86,13 @@ services:
       - xpack.security.http.ssl.certificate=certs/elasticsearch/elasticsearch.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.http.ssl.client_authentication=optional
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.key=certs/elasticsearch/elasticsearch.key
       - xpack.security.transport.ssl.certificate=certs/elasticsearch/elasticsearch.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.client_authentication=optional
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
     ulimits:
@@ -156,13 +158,13 @@ services:
       user: root
       environment:
         - FLEET_ENROLL=1
-        - FLEET_INSECURE=1
         - FLEET_SERVER_POLICY_ID=fleet-server-policy
         - FLEET_SERVER_ENABLE=1
         - KIBANA_FLEET_SETUP=1
         - KIBANA_HOST=https://kibana:5601
         - FLEET_URL=https://fleet-server:8220
         - FLEET_SERVER_ELASTICSEARCH_HOST=https://elasticsearch:9200
+        - FLEET_CA=/certs/ca/ca.crt
         - KIBANA_FLEET_USERNAME=elastic
         - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD}
         - FLEET_SERVER_CERT=/certs/fleet-server/fleet-server.crt
