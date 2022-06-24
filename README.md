@@ -22,7 +22,7 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 ### Starting
 
-Running this will:
+Starting this will:
 - create a network called `elastic`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
@@ -70,7 +70,7 @@ elastic
 
 ### Restarting
 
-Stopping this will:
+Restarting this will:
 - restart the containers
 
 ```
