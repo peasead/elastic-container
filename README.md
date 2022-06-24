@@ -129,16 +129,13 @@ If you want to retain the data in Elasticsearch, remove the `--rm` from the `doc
 ## Questions
 
 1. But...why?  
-To test data feeds, ingest pipelines, detection rules, Fleet configs...w/e. Something I could blow away fast but had the bare necessities.
+To be able to quickly stand up and take down an Elastic Stack with everything already configured allowing me to focus on what I need to do.
 
-1. Why don't you use Docker Compose?  
-Old habbits.
-
-1. This is horrible, why can't you write better scripts?  
+2. This is horrible, why can't you write better scripts?  
 Function over beauty.
 
-1. I suppose I can use this, can I change the creds or stack version?  
+3. I suppose I can use this, can I change the creds or stack version?  
 Of course.
 
-1. Elastic-Agent or Fleet Server, what's the difference?  
+4. Elastic-Agent or Fleet Server, what's the difference?  
 The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
