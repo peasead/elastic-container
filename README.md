@@ -9,7 +9,7 @@ Requirements are minimal: \*NIX or macOS, [docker](https://docs.docker.com/get-d
 You can use the links above, other methods you prefer, or if you're using macOS (and have [Homebrew](https://brew.sh/))
 
 ```
-brew install docker jq git curl
+brew install docker jq git curl docker-compose
 ```
 
 ## Usage
