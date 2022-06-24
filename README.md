@@ -37,12 +37,27 @@ a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 ```
 After a few minutes browse to http://localhost:5601 and log in with `elastic:password`.
 
-### Stopping
+### Destroying
 
-Stopping this will:
+Destroying this will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
 - delete the `elastic` container network
+- delete the created volumes
+
+```
+$ ./elastic-container.sh destroy
+
+fleet-server
+kibana
+elasticsearch
+elastic
+```
+
+### Stopping
+
+Stopping this will:
+- stop the Elasticsearch and Kibana containers without deleting them
 
 ```
 $ ./elastic-container.sh stop
