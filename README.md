@@ -4,12 +4,12 @@ Stand up simple Elastic containers with Kibana, Fleet, and the Detection Engine.
 
 ## Requirements
 
-Requirements are minimal: \*NIX or macOS, [Docker](https://docs.docker.com/get-docker/), [jq](https://stedolan.github.io/jq/download/), curl, and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+Requirements are minimal: \*NIX or macOS, [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 You can use the links above, other methods you prefer, or if you're using macOS (and have [Homebrew](https://brew.sh/))
 
 ```
-brew install docker jq git curl
+brew install docker jq git curl docker-compose
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ There is zero saved data, everything is wiped when the containers are stopped. A
 
 ### Starting
 
-Running this will:
+Starting this will:
 - create a network called `elastic`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
@@ -37,12 +37,27 @@ a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 ```
 After a few minutes browse to http://localhost:5601 and log in with `elastic:password`.
 
-### Stopping
+### Destroying
 
-Stopping this will:
+Destroying this will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
 - delete the `elastic` container network
+- delete the created volumes
+
+```
+$ ./elastic-container.sh destroy
+
+fleet-server
+kibana
+elasticsearch
+elastic
+```
+
+### Stopping
+
+Stopping this will:
+- stop the Elasticsearch and Kibana containers without deleting them
 
 ```
 $ ./elastic-container.sh stop
@@ -55,7 +70,7 @@ elastic
 
 ### Restarting
 
-Stopping this will:
+Restarting this will:
 - restart the containers
 
 ```
@@ -114,16 +129,13 @@ If you want to retain the data in Elasticsearch, remove the `--rm` from the `doc
 ## Questions
 
 1. But...why?  
-To test data feeds, ingest pipelines, detection rules, Fleet configs...w/e. Something I could blow away fast but had the bare necessities.
+To be able to quickly stand up and take down an Elastic Stack with everything already configured allowing me to focus on what I need to do.
 
-1. Why don't you use Docker Compose?  
-Old habbits.
-
-1. This is horrible, why can't you write better scripts?  
+2. This is horrible, why can't you write better scripts?  
 Function over beauty.
 
-1. I suppose I can use this, can I change the creds or stack version?  
+3. I suppose I can use this, can I change the creds or stack version?  
 Of course.
 
-1. Elastic-Agent or Fleet Server, what's the difference?  
+4. Elastic-Agent or Fleet Server, what's the difference?  
 The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
