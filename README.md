@@ -23,7 +23,7 @@ The concept is to use for testing -> see the Elastic [documentation](https://www
 ### Starting
 
 Starting this will:
-- create a network called `elastic`
+- create a Docker network called `elastic-container-default`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
 
