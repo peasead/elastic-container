@@ -1,4 +1,18 @@
-server.host: "0.0.0.0"
 xpack.encryptedSavedObjects.encryptionKey: "thirty-two-or-more-random-characters"
-xpack.fleet.agents.tlsCheckDisabled: true
-xpack.security.enabled: true
+server.host: "0.0.0.0"
+telemetry.enabled: "false"
+xpack.fleet.packages:
+  - name: fleet_server
+    version: latest
+  - name: system
+    version: latest
+xpack.fleet.agentPolicies:
+  - name: Fleet-Server-Policy
+    id: fleet-server-policy
+    namespace: default
+    package_policies:
+      - name: fleet_server-1
+        package:
+          name: fleet_server
+
+
