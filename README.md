@@ -42,7 +42,7 @@ After a few minutes browse to https://localhost:5601 and log in with `elastic:el
 Destroying this will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
-- delete the `elastic` container network
+- delete the `elastic-container-default` container network
 - delete the created volumes
 
 ```
@@ -101,9 +101,13 @@ Download container images, but not start them.
 ```
 $ ./elastic-container.sh stage
 
-7.15.0: Pulling from elasticsearch/elasticsearch
-e7bd69ff4774: Pull complete
-d0a0f12aaf30: Pull complete
+8.3.0: Pulling from elasticsearch/elasticsearch
+7aabcb84784a: Already exists
+e3f44495617d: Downloading [====>                                              ]  916.5kB/11.26MB
+52008db3f842: Download complete
+551b59c59fdc: Downloading [>                                                  ]  527.4kB/366.9MB
+25ee26aa662e: Download complete
+7a85d02d9264: Download complete
 ...
 ```
 
