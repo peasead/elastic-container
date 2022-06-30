@@ -14,11 +14,11 @@ brew install docker jq git curl docker-compose
 
 ## Usage
 
-This uses default creds of `elastic:password` and is intended purely for rapid testing a local Elastic stack.
+This uses default creds of `elastic:elastic`, change this in the `.env` file.
 
-There is zero security enabled, beyond basic auth, and this should not be Internet exposed or used anywhere in production.
+This uses basic authentication and self-signed TLS certificates; if you are planning on using this in production, you should use valid TLS certificates.
 
-There is zero saved data, everything is wiped when the containers are stopped. Again, not meant for anything but testing.
+The concept is to use for testing -> see the Elastic [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/secure-cluster.html) on securing the stack.
 
 ### Starting
 
@@ -35,7 +35,7 @@ ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
 a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
 ```
-After a few minutes browse to http://localhost:5601 and log in with `elastic:password`.
+After a few minutes browse to http://localhost:5601 and log in with `elastic:elastic` (or whatever you changed it to in `.env` - you DID change it right?).
 
 ### Destroying
 
@@ -111,9 +111,9 @@ d0a0f12aaf30: Pull complete
 
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
-ELASTIC_PASSWORD="password"
-KIBANA_PASSWORD="password"
-STACK_VERSION="7.17.0"
+ELASTIC_PASSWORD="elastic"
+KIBANA_PASSWORD="kibana"
+STACK_VERSION="8.3.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
