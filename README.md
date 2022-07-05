@@ -31,7 +31,7 @@ yum install docker jq git curl docker-compose
 
 ## Usage
 
-This uses default creds of `elastic:password` and is intended purely for rapid testing a local Elastic stack.
+This uses default creds of `elastic:elastic` and is intended purely for rapid testing a local Elastic stack.
 
 There is zero security enabled, beyond basic auth, and this should not be Internet exposed or used anywhere in production.
 
@@ -52,7 +52,7 @@ ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
 a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
 ```
-After a few minutes browse to http://localhost:5601 and log in with `elastic:password`.
+After a few minutes browse to http://localhost:5601 and log in with `elastic:elastic`.
 
 ### Destroying
 
