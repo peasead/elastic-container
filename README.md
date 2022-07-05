@@ -126,7 +126,7 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 KIBANA_PASSWORD="password"
-STACK_VERSION="7.17.0"
+STACK_VERSION="8.3.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
