@@ -4,11 +4,13 @@ Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Ki
 
 ## Requirements
 
-Operating System: Linux or MacOS 
+### Operating System: Linux or MacOS 
 
-Prerequisites: [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+### Prerequisites: [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
+
+NOTE! You might want to assume that some of these tools (like curl or jq) are present by default on your OS or distrobution of choice, DON'T. If you attempt to start this project and it hangs or errors out you can assume that you are missing a neccessary prerequisite.
 
 MacOS:
 ```
