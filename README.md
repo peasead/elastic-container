@@ -1,6 +1,6 @@
 # Elastic Container
 
-Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre configured, enabled and ready to use.
+Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre configured, enabled and ready to use, within minutes.
 
 ## Requirements
 
