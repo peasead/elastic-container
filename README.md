@@ -1,15 +1,32 @@
 # Elastic Container
 
-Stand up simple Elastic containers with Kibana, Fleet, and the Detection Engine.
+Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre configured, enabled and ready to use.
 
 ## Requirements
 
-Requirements are minimal: \*NIX or macOS, [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+### Operating System: 
 
-You can use the links above, other methods you prefer, or if you're using macOS (and have [Homebrew](https://brew.sh/))
+- Linux or MacOS 
 
+### Prerequisites: 
+
+- [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
+
+NOTE! You might want to assume that some of these tools (like curl or jq) are present by default on your OS or distrobution of choice, DON'T. If you attempt to start this project and it hangs or errors out you can assume that you are missing a neccessary prerequisite.
+
+MacOS:
 ```
 brew install docker jq git curl docker-compose
+```
+Debian or Ubuntu:
+```
+apt install docker jq git curl docker-compose
+```
+Fedora or CentOS:
+```
+yum install docker jq git curl docker-compose
 ```
 
 ## Usage
@@ -113,7 +130,7 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 KIBANA_PASSWORD="password"
-STACK_VERSION="7.17.0"
+STACK_VERSION="8.3.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
