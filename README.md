@@ -2,6 +2,8 @@
 
 Stand up simple Elastic containers with Kibana, Fleet, and the Detection Engine.
 
+[![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
+
 ## Requirements
 
 Requirements are minimal: \*NIX or macOS, [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
