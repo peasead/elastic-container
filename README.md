@@ -1,6 +1,6 @@
 # Elastic Container
 
-Stand up simple Elastic containers with Kibana, Fleet, and the Detection Engine.
+Stand up simple Elastic containers with Elasticsearch, Kibana, the Elastic Agent (acting as a Fleet server), and the Detection Engine.
 
 [![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
 
@@ -105,9 +105,9 @@ $ ./elastic-container.sh stage
 
 8.3.0: Pulling from elasticsearch/elasticsearch
 7aabcb84784a: Already exists
-e3f44495617d: Downloading [====>                                              ]  916.5kB/11.26MB
+e3f44495617d: Downloading [====> ]  916.5kB/11.26MB
 52008db3f842: Download complete
-551b59c59fdc: Downloading [>                                                  ]  527.4kB/366.9MB
+551b59c59fdc: Downloading [>     ]  527.4kB/366.9MB
 25ee26aa662e: Download complete
 7a85d02d9264: Download complete
 ...
@@ -129,19 +129,3 @@ If you want to use different Elastic Stack versions, you can change those as wel
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 - [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
-
-If you want to retain the data in Elasticsearch, remove the `--rm` from the `docker run` lines in `elastic-container.sh`. This is not recommended as there are no mounted volumes.
-
-## Questions
-
-1. But...why?  
-To be able to quickly stand up and take down an Elastic Stack with everything already configured allowing me to focus on what I need to do.
-
-2. This is horrible, why can't you write better scripts?  
-Function over beauty.
-
-3. I suppose I can use this, can I change the creds or stack version?  
-Of course.
-
-4. Elastic-Agent or Fleet Server, what's the difference?  
-The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
