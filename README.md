@@ -39,7 +39,7 @@ This should not be Internet exposed or used in a production environment.
 
 ### Starting
 
-Starting this will:
+Starting will:
 - create a network called `elastic`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
@@ -56,7 +56,7 @@ After a few minutes, when prompted, browse to https://localhost:5601 and log in 
 
 ### Destroying
 
-Destroying this will:
+Destroying will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
 - delete the `elastic` container network
@@ -73,7 +73,7 @@ elastic
 
 ### Stopping
 
-Stopping this will:
+Stopping will:
 - stop the Elasticsearch and Kibana containers without deleting them
 
 ```
@@ -87,7 +87,7 @@ elastic
 
 ### Restarting
 
-Restarting this will:
+Restarting will:
 - restart all the containers
 
 ```
