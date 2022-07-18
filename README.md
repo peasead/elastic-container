@@ -130,8 +130,8 @@ d0a0f12aaf30: Pull complete
 
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
-ELASTIC_PASSWORD="password"
-KIBANA_PASSWORD="password"
+ELASTIC_PASSWORD="elastic"
+KIBANA_PASSWORD="elastic"
 STACK_VERSION="8.3.2"
 ```
 
