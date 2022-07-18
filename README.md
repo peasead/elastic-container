@@ -31,6 +31,16 @@ Fedora or CentOS:
 yum install docker jq git curl docker-compose
 ```
 
+## Steps
+
+1. Install required pre-reqs 
+
+2. Git clone this repo
+
+2. Cd (change directory) into the elastic-container/ folder
+
+3. Execute the elastic-container.sh shell script with the start argument ./elastic-container start
+
 ## Usage
 
 This uses default creds of `elastic:elastic` and is intended purely for security research on a local Elastic stack.
