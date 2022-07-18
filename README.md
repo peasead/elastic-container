@@ -33,7 +33,7 @@ yum install docker jq git curl docker-compose
 
 ## Usage
 
-This uses default creds of `elastic:elastic` and is intended purely for rapid security researach on a local Elastic stack.
+This uses default creds of `elastic:elastic` and is intended purely for security research on a local Elastic stack.
 
 This should not be Internet exposed or used in a production environment.
 
