@@ -37,9 +37,11 @@ yum install docker jq git curl docker-compose
 
 2. Git clone this repo
 
-2. Cd (change directory) into the elastic-container/ folder
+3. Cd (change directory) into the elastic-container/ folder
 
-3. Execute the elastic-container.sh shell script with the start argument ./elastic-container start
+4. Execute the elastic-container.sh shell script with the start argument ./elastic-container start
+
+5. Wait for the prompt to tell you to browse to https://localhost:5601
 
 ## Usage
 
