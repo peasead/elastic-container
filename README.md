@@ -52,7 +52,7 @@ ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
 a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
 ```
-After a few minutes browse to https://localhost:5601 and log in with `elastic:elastic`.
+After a few minutes, when prompted, browse to https://localhost:5601 and log in with `elastic:elastic`.
 
 ### Destroying
 
@@ -88,7 +88,7 @@ elastic
 ### Restarting
 
 Restarting this will:
-- restart the containers
+- restart all the containers
 
 ```
 $ ./elastic-container.sh restart
@@ -100,7 +100,8 @@ fleet-server
 
 ### Status
 
-Return the status of the containers.
+Requesting the status will:
+- return the current status of the running containers
 
 ```
 $ ./elastic-container.sh status
@@ -113,7 +114,8 @@ elasticsearch: Up 6 minutes
 
 ### Staging
 
-Download container images, but not start them.
+Staging the container images will:
+- download all container images to your local system, but will not start them
 
 ```
 $ ./elastic-container.sh stage
@@ -130,7 +132,7 @@ In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="password"
 KIBANA_PASSWORD="password"
-STACK_VERSION="8.3.1"
+STACK_VERSION="8.3.2"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
@@ -140,8 +142,6 @@ If you want to use different Elastic Stack versions, you can change those as wel
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 - [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
-
-If you want to retain the data in Elasticsearch, remove the `--rm` from the `docker run` lines in `elastic-container.sh`. This is not recommended as there are no mounted volumes.
 
 ## Questions
 
