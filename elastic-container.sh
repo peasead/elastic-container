@@ -53,7 +53,7 @@ configure_kbn() {
       curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/detection_engine/rules/prepackaged" 1>&2
 
       echo
-      echo "Prebuilt Detections Enabled!"
+      echo "Prepackaged rules installed!"
       echo
       break
     else
