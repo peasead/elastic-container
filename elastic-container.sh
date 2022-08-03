@@ -140,7 +140,7 @@ case "${ACTION}" in
 
   echo "READY SET GO!"
   echo
-  echo "Browse to https://localhost:5601"
+  echo "Browse to https://localhost:${KIBANA_PORT}"
   echo "Username: ${ELASTIC_USERNAME}"
   echo "Passphrase: ${ELASTIC_PASSWORD}"
   echo
