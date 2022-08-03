@@ -17,7 +17,7 @@ usage() {
   usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
   actions:
     stage     downloads all necessary images to local storage
-    start     creates network and starts containers 
+    start     creates a container network and starts containers 
     stop      stops running containers without removing them 
     destroy   stops and removes the containers, the network and volumes created
     restart   simply restarts all the stack containers
