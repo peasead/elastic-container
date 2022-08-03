@@ -164,10 +164,11 @@ case "${ACTION}" in
   echo "Restarting all Elastic Stack components."
   echo "#####"
   docker-compose restart 2>&3
+  docker-compose ps
   ;;
 
 "status")
-  docker-compose ps -a
+  docker-compose ps
   ;;
 
 "help")
