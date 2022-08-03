@@ -2,7 +2,7 @@
 
 Stand up simple Elastic containers with Elasticsearch, Kibana, the Elastic Agent (acting as a Fleet server), and the Detection Engine.
 
-[![elastic-container.png](https://i.postimg.cc/QtcvqQZ2/elastic-container.png)](https://postimg.cc/cg4Dx8Hh)
+![elastic-container](https://user-images.githubusercontent.com/7442091/182709910-bd50c87e-0407-478d-8216-c883631cbda9.png)
 
 ## Requirements
 
