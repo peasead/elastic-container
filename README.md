@@ -1,5 +1,7 @@
 # Elastic Container
 
+*Note: * The Elastic Container project is not sponsored or maintained by the Elastic company.
+
 Stand up simple Elastic containers with Elasticsearch, Kibana, the Elastic Agent (acting as a Fleet server), and the Detection Engine.
 
 ![elastic-container](https://user-images.githubusercontent.com/7442091/182709910-bd50c87e-0407-478d-8216-c883631cbda9.png)
