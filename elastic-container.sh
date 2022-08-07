@@ -154,7 +154,7 @@ case "${ACTION}" in
 
 "destroy")
   echo "#####"
-  echo "Stopping and removing the containers, network and volumes created."
+  echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
   docker-compose down -v
   ;;
