@@ -36,7 +36,7 @@ configure_kbn() {
   while [ $i -gt 0 ]; do
     STATUS=$(curl -I -k --silent "${LOCAL_KBN_URL}" | head -n 1 | cut -d ' ' -f2)
     echo
-    echo "Attempting to enable the Detection Engine and Prebuilt-Detection Rules"
+    echo "Attempting to enable the Detection Engine and install prebuilt Detection Rules"
 
     if [ "${STATUS}" == "302" ]; then
       echo
