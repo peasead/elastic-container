@@ -1,34 +1,58 @@
-# Elastic Container
+# The Elastic Container Project
 
-*Note: * The Elastic Container project is not sponsored or maintained by the Elastic company.
+Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre-configured, enabled and ready to use, within minutes.
 
-Stand up simple Elastic containers with Elasticsearch, Kibana, the Elastic Agent (acting as a Fleet server), and the Detection Engine.
-
-![elastic-container](https://user-images.githubusercontent.com/7442091/182709910-bd50c87e-0407-478d-8216-c883631cbda9.png)
+[![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
 
 ## Requirements
 
-Requirements are minimal: \*NIX or macOS (Intel or M1 are fine), [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+### Operating System: 
 
-You can use the links above, other methods you prefer, or if you're using macOS (and have [Homebrew](https://brew.sh/))
+- Linux or MacOS 
 
+### Prerequisites: 
+
+- [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
+
+NOTE! You might want to assume that some of these tools (like curl or jq) are present by default on your OS or distrobution of choice, DON'T. If you attempt to start this project and it hangs or errors out you can assume that you are missing a neccessary prerequisite.
+
+MacOS:
 ```
-brew install jq git curl docker-compose
-brew install docker --cask
+brew install docker jq git curl docker-compose
 ```
+Debian or Ubuntu:
+```
+apt install docker jq git curl docker-compose
+```
+Fedora or CentOS:
+```
+yum install docker jq git curl docker-compose
+```
+
+## Steps
+
+1. Install required pre-reqs 
+
+2. Git clone this repo
+
+3. Cd (change directory) into the elastic-container/ folder
+
+4. Execute the elastic-container.sh shell script with the start argument ./elastic-container start
+
+5. Wait for the prompt to tell you to browse to https://localhost:5601
 
 ## Usage
 
-This uses default creds of `elastic:elastic`, change this in the `.env` file. Don't be that person that leaves default creds.
+This uses default creds of `elastic:elastic` and is intended purely for security research on a local Elastic stack.
 
-This uses basic authentication and self-signed TLS certificates; if you are planning on using this in production, you should use valid TLS certificates.
-
-The concept is to use for testing -> see the Elastic [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/secure-cluster.html) on securing the stack.
+This should not be Internet exposed or used in a production environment.
 
 ### Starting
 
-Starting this will:
-- create a Docker network called `elastic-container-default`
+Starting will:
+- create a network called `elastic`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
 
@@ -40,14 +64,14 @@ ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
 a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
 24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
 ```
-After a few minutes browse to https://localhost:5601 and log in with `elastic:elastic` (or whatever you changed it to in `.env` - you DID change it right?).
+After a few minutes, when prompted, browse to https://localhost:5601 and log in with `elastic:elastic`.
 
 ### Destroying
 
-Destroying this will:
+Destroying will:
 - stop the Elasticsearch and Kibana containers
 - delete the Elasticsearch and Kibana containers
-- delete the `elastic-container-default` container network
+- delete the `elastic` container network
 - delete the created volumes
 
 ```
@@ -61,7 +85,7 @@ elastic
 
 ### Stopping
 
-Stopping this will:
+Stopping will:
 - stop the Elasticsearch and Kibana containers without deleting them
 
 ```
@@ -75,8 +99,8 @@ elastic
 
 ### Restarting
 
-Restarting this will:
-- restart the containers
+Restarting will:
+- restart all the containers
 
 ```
 $ ./elastic-container.sh restart
@@ -88,7 +112,8 @@ fleet-server
 
 ### Status
 
-Return the status of the containers.
+Requesting the status will:
+- return the current status of the running containers
 
 ```
 $ ./elastic-container.sh status
@@ -101,18 +126,15 @@ elasticsearch: Up 6 minutes
 
 ### Staging
 
-Download container images, but not start them.
+Staging the container images will:
+- download all container images to your local system, but will not start them
 
 ```
 $ ./elastic-container.sh stage
 
-8.3.0: Pulling from elasticsearch/elasticsearch
-7aabcb84784a: Already exists
-e3f44495617d: Downloading [====> ]  916.5kB/11.26MB
-52008db3f842: Download complete
-551b59c59fdc: Downloading [>     ]  527.4kB/366.9MB
-25ee26aa662e: Download complete
-7a85d02d9264: Download complete
+7.15.0: Pulling from elasticsearch/elasticsearch
+e7bd69ff4774: Pull complete
+d0a0f12aaf30: Pull complete
 ...
 ```
 
@@ -121,8 +143,8 @@ e3f44495617d: Downloading [====> ]  916.5kB/11.26MB
 In `elastic-container.sh`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="elastic"
-KIBANA_PASSWORD="kibana"
-STACK_VERSION="8.3.0"
+KIBANA_PASSWORD="elastic"
+STACK_VERSION="8.3.2"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
@@ -132,3 +154,17 @@ If you want to use different Elastic Stack versions, you can change those as wel
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 - [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
+
+## Questions
+
+1. But...why?  
+To be able to quickly stand up and take down an Elastic Stack with everything already configured allowing me to focus on what I need to do.
+
+2. This is horrible, why can't you write better scripts?  
+Function over beauty.
+
+3. I suppose I can use this, can I change the creds or stack version?  
+Of course.
+
+4. Elastic-Agent or Fleet Server, what's the difference?  
+The Elastic-Agent acts as the Fleet Server role. More information can be found on the [official documentation](https://www.elastic.co/guide/en/fleet/current/fleet-server.html).
