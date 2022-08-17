@@ -45,7 +45,7 @@ yum install docker jq git curl docker-compose
 
 ## Usage
 
-This uses default creds of `elastic:elastic` and is intended purely for security research on a local Elastic stack.
+This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. Change these credentials in the `.env` file.
 
 This should not be Internet exposed or used in a production environment.
 
@@ -59,12 +59,31 @@ Starting will:
 ```
 $ ./elastic-container.sh start
 
-99e03383cf824cd2e04d061fcf59c057fc78616bb877929309f2e1db76e9ea73
-ccf21bd36ccbfcca885ed519ace053cc5506cf1248e9dd854f4e22582e0cfef1
-a7214e3c112fd330e32404dbf1b01eeef2733e3629ac897a964e829dad6981dd
-24ad732eb62e0c69e4bb0f204a5150251f1d78cf3f286780d26d3478b3b7fec1
+...
+ ⠿ Container elasticsearch-security-setup  Healthy 7.3s
+ ⠿ Container elasticsearch                 Healthy 39.3s
+ ⠿ Container kibana                        Healthy 59.3s
+ ⠿ Container elastic-agent                 Started 59.7s
+
+Attempting to enable the Detection Engine and Prebuilt-Detection Rules
+
+Kibana is up. Proceeding
+
+Detection engine enabled. Installing prepackaged rules.
+
+Prepackaged rules installed!
+
+Waiting 40 seconds for Fleet Server setup
+
+Populating Fleet Settings
+
+READY SET GO!
+
+Browse to https://localhost:5601
+Username: elastic
+Passphrase: not-the-default!
 ```
-After a few minutes, when prompted, browse to https://localhost:5601 and log in with `elastic:elastic`.
+After a few minutes, when prompted, browse to https://localhost:5601 and log in with your configured credentials.
 
 ### Destroying
 
@@ -140,10 +159,10 @@ d0a0f12aaf30: Pull complete
 
 ## Modifying
 
-In `.env`, the variables are defined, any can be changed.
+In `.env`, the variables are defined, any can be changed. **Please change the default credentials.**
 ```
-ELASTIC_PASSWORD="elastic"
-KIBANA_PASSWORD="elastic"
+ELASTIC_PASSWORD="changeme"
+KIBANA_PASSWORD="changeme"
 STACK_VERSION="8.3.2"
 ```
 
