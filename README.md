@@ -140,7 +140,7 @@ d0a0f12aaf30: Pull complete
 
 ## Modifying
 
-In `elastic-container.sh`, the variables are defined, any can be changed.
+In `.env`, the variables are defined, any can be changed.
 ```
 ELASTIC_PASSWORD="elastic"
 KIBANA_PASSWORD="elastic"
