@@ -6,6 +6,14 @@ Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Ki
 
 [![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
 
+## Steps
+
+1. `git clone` this repo
+2. Install prerequisites
+3. Change into the `elastic-container/` folder
+4. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
+5. Wait for the prompt to tell you to browse to https://localhost:5601
+
 ## Requirements
 
 ### Operating System: 
@@ -17,8 +25,6 @@ Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Ki
 - [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
-
-NOTE! You might want to assume that some of these tools (like curl or jq) are present by default on your OS or distrobution of choice, DON'T. If you attempt to start this project and it hangs or errors out you can assume that you are missing a neccessary prerequisite.
 
 MacOS:
 ```
@@ -33,18 +39,6 @@ Fedora or CentOS:
 yum install docker jq git curl docker-compose
 ```
 
-## Steps
-
-1. Install required pre-reqs 
-
-2. Git clone this repo
-
-3. Cd (change directory) into the elastic-container/ folder
-
-4. Execute the elastic-container.sh shell script with the start argument ./elastic-container start
-
-5. Wait for the prompt to tell you to browse to https://localhost:5601
-
 ## Usage
 
 This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. Change these credentials in the `.env` file.
@@ -52,6 +46,8 @@ This uses default creds of `elastic:changeme` and is intended purely for securit
 This should not be Internet exposed or used in a production environment.
 
 ### Starting
+
+**If you have not changed the default credentials in the `.env` file, the script will exit.**
 
 Starting will:
 - create a network called `elastic`
