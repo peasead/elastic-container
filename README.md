@@ -22,7 +22,7 @@ NOTE! You might want to assume that some of these tools (like curl or jq) are pr
 
 MacOS:
 ```
-brew install docker jq git curl docker-compose
+brew install docker jq git curl
 ```
 Debian or Ubuntu:
 ```
