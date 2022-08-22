@@ -11,6 +11,15 @@ HEADERS=(
   -H 'Content-Type: application/json'
 )
 
+passphrase_reset() {
+  if grep -Fq "changeme" .env; 
+  then echo "Sorry, looks like you haven't updated the passphrase from the default";
+  echo "Please update the changeme passphrases in the .env file.";
+  exit 1;
+  else echo "Passphrase has been reset. Proceeding.";
+  fi
+}
+
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
@@ -121,6 +130,8 @@ case "${ACTION}" in
   ;;
 
 "start")
+  passphrase_reset
+
   get_host_ip
 
   echo "Starting Elastic Stack network and containers"
