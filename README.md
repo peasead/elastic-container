@@ -37,7 +37,7 @@ apt install docker jq git curl docker-compose
 ```
 Fedora or CentOS:
 ```
-yum install docker jq git curl docker-compose
+dnf install docker jq git curl docker-compose
 ```
 
 ## Usage
