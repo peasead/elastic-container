@@ -28,7 +28,8 @@ You can use the links above, the Linux package install commands below, or [Homeb
 
 MacOS:
 ```
-brew install docker jq git curl
+brew install jq git curl
+brew install --cask docker
 ```
 Debian or Ubuntu:
 ```
