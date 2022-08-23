@@ -150,7 +150,7 @@ services:
         elasticsearch:
           condition: service_healthy
       image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
-      container_name: elastic-agent
+      container_name: fleet-server
       volumes:
         - certs:/certs
       ports:
