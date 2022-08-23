@@ -174,12 +174,12 @@ case "${ACTION}" in
   echo "#####"
   echo "Restarting all Elastic Stack components."
   echo "#####"
-  docker-compose restart 2>&3
-  docker-compose ps
+  docker-compose restart elasticsearch kibana fleet-server  2>&3
+  docker-compose ps | grep -v setup
   ;;
 
 "status")
-  docker-compose ps
+  docker-compose ps | grep -v setup
   ;;
 
 "help")
