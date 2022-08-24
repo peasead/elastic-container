@@ -150,7 +150,7 @@ Staging the container images will:
 ```
 $ ./elastic-container.sh stage
 
-7.15.0: Pulling from elasticsearch/elasticsearch
+8.4.0: Pulling from elasticsearch/elasticsearch
 e7bd69ff4774: Pull complete
 d0a0f12aaf30: Pull complete
 ...
@@ -158,11 +158,11 @@ d0a0f12aaf30: Pull complete
 
 ## Modifying
 
-In `.env`, the variables are defined, any can be changed. **Please change the default credentials.**
+In `.env`, the variables are defined, any can be changed. **You must change the default credentials.**
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
-STACK_VERSION="8.3.2"
+STACK_VERSION="8.4.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
