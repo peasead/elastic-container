@@ -2,7 +2,7 @@
 
 Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre-configured, enabled and ready to use, within minutes.
 
-:warning: this is not an Elastic created, sponsored, or maintained project. Elastic is not responsible for this projects design or implementation.
+:warning: This is not an Elastic created, sponsored, or maintained project. Elastic is not responsible for this projects design or implementation.
 
 [![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
 
