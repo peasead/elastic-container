@@ -28,22 +28,24 @@ If you're interested in more details regarding this project and what to do once 
 
 You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
 
-MacOS:
+**MacOS:**
 ```
 brew install jq git curl
 brew install --cask docker
 ```
-Ubuntu:
-[Docker installation instructions](https://docs.docker.com/engine/install/ubuntu/)
+**Ubuntu:**  
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/ubuntu/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 apt-get install jq git curl
 ```
-Fedora:
-[Docker installation instructions](https://docs.docker.com/engine/install/fedora/)
+**Fedora:**  
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/fedora/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 dnf install jq git curl
 ```
-[Docker installation instructions for other distros](https://docs.docker.com/engine/install/)
+
+**Other Linux distributions:**  
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 
 ## Usage
 
