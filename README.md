@@ -2,7 +2,7 @@
 
 Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Kibana, Fleet, and the Detection Engine all pre-configured, enabled and ready to use, within minutes.
 
-If you're interested in more details and operationalization of the project, check out our [blog post](https://www.elastic.co/security-labs/the-elastic-container-project) on the Elastic Security Labs site.
+If you're interested in more details regarding the project and what to do once you have it running, check out our [blog post](https://www.elastic.co/security-labs/the-elastic-container-project) on the Elastic Security Labs site.
 
 :warning: This is not an Elastic created, sponsored, or maintained project. Elastic is not responsible for this projects design or implementation.
 
