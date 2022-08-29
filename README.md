@@ -145,6 +145,18 @@ kibana: Up 6 minutes
 elasticsearch: Up 6 minutes
 ```
 
+### Clear
+
+Clearing will :
+- clear all documents in logs and metrics indices 
+
+```
+$ ./elastic-container.sh clear
+
+Successfully cleared logs data stream
+Successfully cleared metrics data stream
+```
+
 ### Staging
 
 Staging the container images will:
