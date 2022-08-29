@@ -136,7 +136,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers"
 
-  docker-compose up -d --no-deps
+  docker compose up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
@@ -160,26 +160,26 @@ case "${ACTION}" in
 "stop")
   echo "Stopping running containers."
   
-  docker-compose stop
+  docker compose stop
   ;;
 
 "destroy")
   echo "#####"
   echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
-  docker-compose down -v
+  docker compose down -v
   ;;
 
 "restart")
   echo "#####"
   echo "Restarting all Elastic Stack components."
   echo "#####"
-  docker-compose restart elasticsearch kibana fleet-server  2>&3
-  docker-compose ps | grep -v setup
+  docker compose restart elasticsearch kibana fleet-server  2>&3
+  docker compose ps | grep -v setup
   ;;
 
 "status")
-  docker-compose ps | grep -v setup
+  docker compose ps | grep -v setup
   ;;
 
 "help")
