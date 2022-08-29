@@ -31,6 +31,7 @@ usage() {
     destroy   stops and removes the containers, the network and volumes created
     restart   simply restarts all the stack containers
     status    check the status of the stack containers
+    clear     clear all documents in logs and metrics indexes
     help      print this message
   flags:
     -v        enable verbose output
@@ -92,6 +93,21 @@ set_fleet_values() {
   printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
   printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
   printf '{"config_yaml": "%s"}' "ssl.verification_mode: certificate" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq 
+}
+
+clear_documents() {
+  if (( $(  curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "https://${ipvar}:9200/_data_stream/logs-*" | grep -c "true" ) > 0 )) ; then
+    printf "Successfully cleared logs data stream"
+  else 
+    printf "Failed to clear logs data stream"
+  fi
+  echo 
+  if (( $(  curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "https://${ipvar}:9200/_data_stream/metrics-*" | grep -c "true" ) > 0 )) ; then
+    printf "Successfully cleared metrics data stream"
+  else 
+    printf "Failed to clear metrics data stream"
+  fi
+  echo
 }
 
 # Logic to enable the verbose output if needed
@@ -180,6 +196,10 @@ case "${ACTION}" in
 
 "status")
   docker compose ps | grep -v setup
+  ;;
+
+"clear")
+  clear_documents 
   ;;
 
 "help")
