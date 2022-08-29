@@ -22,7 +22,7 @@ Stand up a 100% containerized Elastic stack, TLS secured, with Elasticsearch, Ki
 
 ### Prerequisites: 
 
-- [docker](https://docs.docker.com/get-docker/), [docker-compose](https://docs.docker.com/compose/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+- [Docker suite](https://docs.docker.com/get-docker/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
 
@@ -31,14 +31,17 @@ MacOS:
 brew install jq git curl
 brew install --cask docker
 ```
-Debian or Ubuntu:
+Ubuntu:
+[Docker installation instructions](https://docs.docker.com/engine/install/ubuntu/)
 ```
-apt install docker jq git curl docker-compose
+apt-get install jq git curl
 ```
-Fedora or CentOS:
+Fedora:
+[Docker installation instructions](https://docs.docker.com/engine/install/fedora/)
 ```
-dnf install docker jq git curl docker-compose
+dnf install jq git curl
 ```
+[Docker installation instructions for other distros](https://docs.docker.com/engine/install/)
 
 ## Usage
 
