@@ -28,8 +28,8 @@ usage() {
     stage     downloads all necessary images to local storage
     start     creates a container network and starts containers 
     stop      stops running containers without removing them 
-    destroy   stops and removes the containers, the network and volumes created
-    restart   simply restarts all the stack containers
+    destroy   stops and removes the containers, the network, and volumes created
+    restart   restarts all the stack containers
     status    check the status of the stack containers
     clear     clear all documents in logs and metrics indexes
     help      print this message
