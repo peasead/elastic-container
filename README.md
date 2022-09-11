@@ -30,9 +30,19 @@ You can use the links above, the Linux package install commands below, or [Homeb
 
 **MacOS:**
 ```
-brew install jq git curl docker-compose
+brew install jq git curl 
 brew install --cask docker
 ```
+Once we have Docker installed we need to provide it with privileged access for it to function. Run the following command to open the Docker app and follow the proceeding steps.
+```
+open /Applications/Docker.app
+```
+
+1. Confirm you would like to open the app
+2. Select ok whene prompted to provide Docker with privileged access
+3. Enter your password 
+4. Close or minimize the Docker app
+
 **Ubuntu:**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/ubuntu/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
