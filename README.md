@@ -13,7 +13,7 @@ If you're interested in more details regarding this project and what to do once 
 1. `git clone` this repo
 2. Install prerequisites
 3. Change into the `elastic-container/` folder
-4. Change the default password of "changeme" in the .env file 
+4. Change the default password of "changeme" in the `.env` file 
 5. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
 5. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
 6. Wait for the prompt to tell you to browse to https://localhost:5601
