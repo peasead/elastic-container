@@ -33,7 +33,7 @@ You can use the links above, the Linux package install commands below, or [Homeb
 
 **MacOS:**
 ```
-brew install jq git curl 
+brew install jq git curl docker-compose
 brew install --cask docker
 ```
 Once we have Docker installed we need to provide it with privileged access for it to function. Run the following command to open the Docker app and follow the proceeding steps.
