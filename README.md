@@ -40,7 +40,7 @@ open /Applications/Docker.app
 ```
 
 1. Confirm you would like to open the app
-2. Select ok whene prompted to provide Docker with privileged access
+2. Select ok when prompted to provide Docker with privileged access
 3. Enter your password 
 4. Close or minimize the Docker app
 
