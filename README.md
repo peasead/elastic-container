@@ -30,7 +30,7 @@ You can use the links above, the Linux package install commands below, or [Homeb
 
 **MacOS:**
 ```
-brew install jq git curl
+brew install jq git curl docker-compose
 brew install --cask docker
 ```
 **Ubuntu:**  
