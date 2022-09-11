@@ -16,7 +16,7 @@ If you're interested in more details regarding this project and what to do once 
 4. Change the default password of "changeme" in the `.env` file 
 5. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
 5. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
-6. Wait for the prompt to tell you to browse to https://localhost:5601
+6. Wait for the prompt to tell you to browse to https://localhost:5601 (Of note you may be presented a browser warning due to the self-signed certificates. You can type `this is not safe` or click to proceed after which you will be directed to the Elastic log in screen)
 
 ## Requirements
 
