@@ -10,7 +10,7 @@ If you're interested in more details regarding this project and what to do once 
 
 ## Steps
 
-1. `git clone` this repo
+1. `Git clone` this repo
 2. Install prerequisites
 3. Change into the `elastic-container/` folder
 4. Change the default password of "changeme" in the `.env` file 
