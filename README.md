@@ -14,9 +14,10 @@ If you're interested in more details regarding this project and what to do once 
 2. Install prerequisites (see below)
 3. Change into the `elastic-container/` folder
 4. Change the default password of "changeme" in the `.env` file 
-5. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
-5. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
-6. Wait for the prompt to tell you to browse to https://localhost:5601 \
+5. Bulk enable pre-built detection rules by OS in the `.env` file (not required, see usage below)
+6. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
+7. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
+8. Wait for the prompt to tell you to browse to https://localhost:5601 \
 (You may be presented a browser warning due to the self-signed certificates. You can type `thisisnotsafe` or click to proceed after which you will be directed to the Elastic log in screen)
 
 ## Requirements
@@ -65,6 +66,19 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. Change these credentials in the `.env` file.
 
 This should not be Internet exposed or used in a production environment.
+
+### Enable Pre-Built Detection Rules
+
+If you want to bulk enable Elastic's pre-built detection rules by OS, on startup, you can change the value of the chosen OS in the `.env` file from 0 to 1.
+
+```
+# Bulk Enable Detection Rules by OS
+LinuxDR=0
+
+WindowsDR=1
+
+MacOSDR=0
+```
 
 ### Starting
 
