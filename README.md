@@ -176,7 +176,7 @@ kibana: Up 6 minutes
 elasticsearch: Up 6 minutes
 ```
 
-### Clear
+### Clearing
 
 Clearing will :
 - clear all documents in logs and metrics indices 
