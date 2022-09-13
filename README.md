@@ -63,7 +63,7 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 ## Usage
 
-This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. Change these credentials in the `.env` file.
+This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change these credentials in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying).
 
 This should not be Internet exposed or used in a production environment.
 
@@ -82,7 +82,7 @@ MacOSDR=0
 
 ### Starting
 
-**If you have not changed the default credentials in the `.env` file, the script will exit.**
+**If you have not [changed the default credentials](https://github.com/peasead/elastic-container/blob/main/README.md#modifying) in the `.env` file, the script will exit.**
 
 Starting will:
 - create a network called `elastic`
