@@ -7,6 +7,11 @@ assignees: peasead
 
 ---
 
+:star2: **Please ensure you have followed all of the [prerequisites](https://github.com/peasead/elastic-container#prerequisites) before you create an Issue.** :star2:
+Even if you think you have, take one more look to make sure :pray:
+
+
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
