@@ -82,7 +82,7 @@ MacOSDR=0
 
 ### Starting
 
-**If you have not [changed the default credentials](https://github.com/peasead/elastic-container/blob/main/README.md#modifying) in the `.env` file, the script will exit.**
+**If you have not [changed the default passwords](https://github.com/peasead/elastic-container/blob/main/README.md#modifying) in the `.env` file, the script will exit.**
 
 Starting will:
 - create a network called `elastic`
@@ -204,7 +204,7 @@ d0a0f12aaf30: Pull complete
 
 ## Modifying
 
-In `.env`, the variables are defined, any can be changed. **You must change the default credentials.**
+In `.env`, the variables are defined, any can be changed. **You must change the default passwords.**
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
