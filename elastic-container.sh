@@ -8,19 +8,11 @@ declare LinuxDR
 declare WindowsDR
 declare MacOSDR
 
+declare COMPOSE
+
 # Ignore following warning
 # shellcheck disable=SC1091
 . .env
-
-declare COMPOSE
-if docker compose 2>/dev/null; then
-  COMPOSE="docker compose"
-elif command -v docker-compose >/dev/null; then
-  COMPOSE="docker-compose"
-else
-  echo "elastic-container requires docker compose!"
-  exit 2
-fi
 
 HEADERS=(
   -H "kbn-version: ${STACK_VERSION}"
@@ -195,6 +187,15 @@ else
   exec 3<>/dev/null
 fi
 
+if docker compose >/dev/null; then
+  COMPOSE="docker compose"
+elif command -v docker-compose >/dev/null; then
+  COMPOSE="docker-compose"
+else
+  echo "elastic-container requires docker compose!"
+  exit 2
+fi
+
 case "${ACTION}" in
 
 "stage")
@@ -211,7 +212,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers"
 
-  ${COMPOSE} up -d --no-deps
+  ${COMPOSE} up -d --no-deps 2>&3
 
   configure_kbn 1>&2 2>&3
 
@@ -221,7 +222,7 @@ case "${ACTION}" in
   sleep 40
 
   echo "Populating Fleet Settings"
-  set_fleet_values >/dev/null 2>&1
+  set_fleet_values 1>&2 2>&3
   echo
 
   echo "READY SET GO!"
@@ -235,7 +236,7 @@ case "${ACTION}" in
 "stop")
   echo "Stopping running containers."
 
-  ${COMPOSE} stop
+  ${COMPOSE} stop 2>&3
   ;;
 
 "destroy")
