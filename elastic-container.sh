@@ -212,7 +212,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers"
 
-  ${COMPOSE} up -d --no-deps 2>&3
+  ${COMPOSE} up -d --no-deps 
 
   configure_kbn 1>&2 2>&3
 
@@ -222,7 +222,7 @@ case "${ACTION}" in
   sleep 40
 
   echo "Populating Fleet Settings"
-  set_fleet_values 1>&2 2>&3
+  set_fleet_values > /dev/null 2>&1
   echo
 
   echo "READY SET GO!"
@@ -236,7 +236,7 @@ case "${ACTION}" in
 "stop")
   echo "Stopping running containers."
 
-  ${COMPOSE} stop 2>&3
+  ${COMPOSE} stop 
   ;;
 
 "destroy")
@@ -250,8 +250,7 @@ case "${ACTION}" in
   echo "#####"
   echo "Restarting all Elastic Stack components."
   echo "#####"
-  ${COMPOSE} restart elasticsearch kibana fleet-server 2>&3
-  ${COMPOSE} ps | grep -v setup
+  ${COMPOSE} restart elasticsearch kibana fleet-server 
   ;;
 
 "status")
