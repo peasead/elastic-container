@@ -52,14 +52,16 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 ```
 apt-get install jq git curl
 ```
-**Fedora:**  
-Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/fedora/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
+**CentOS/Fedora:**  
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/centos/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 dnf install jq git curl
 ```
 
 **Other Linux distributions:**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
+
+Arch Linux users should install `inetutils` and change the shell script from `hostname -I` to `hostname -i`.
 
 ## Usage
 
