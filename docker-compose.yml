@@ -5,7 +5,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     container_name: ecp-elasticsearch-security-setup
     volumes:
-      - certs:/usr/share/elasticsearch/config/certs
+      - certs:/usr/share/elasticsearch/config/certs:z
     user: "0"
     command: >
       bash -c '
@@ -117,9 +117,9 @@ services:
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
     container_name: ecp-kibana
     volumes:
-      - certs:/usr/share/kibana/config/certs
+      - certs:/usr/share/kibana/config/certs:z
       - kibanadata:/usr/share/kibana/data
-      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml:Z
     ports:
       - ${KIBANA_PORT}:5601
     environment:
@@ -152,7 +152,7 @@ services:
       image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
       container_name: ecp-fleet-server
       volumes:
-        - certs:/certs
+        - certs:/certs:z
       ports:
         - ${FLEET_PORT}:8220
       restart: always
