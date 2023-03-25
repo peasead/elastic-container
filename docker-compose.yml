@@ -3,7 +3,7 @@ version: "2.2"
 services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
-    container_name: elasticsearch-security-setup
+    container_name: ecp-elasticsearch-security-setup
     volumes:
       - certs:/usr/share/elasticsearch/config/certs:z
     user: "0"
@@ -27,19 +27,19 @@ services:
           "instances:\n"\
           "  - name: elasticsearch\n"\
           "    dns:\n"\
-          "      - elasticsearch\n"\
+          "      - ecp-elasticsearch\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
           "  - name: kibana\n"\
           "    dns:\n"\
-          "      - kibana\n"\
+          "      - ecp-kibana\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
           "  - name: fleet-server\n"\
           "    dns:\n"\
-          "      - fleet-server\n"\
+          "      - ecp-fleet-server\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -53,9 +53,9 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        until curl -s --cacert config/certs/ca/ca.crt https://ecp-elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://ecp-elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "All done!";
       '
     healthcheck:
@@ -69,14 +69,14 @@ services:
       setup:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
-    container_name: elasticsearch
+    container_name: ecp-elasticsearch
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - esdata01:/usr/share/elasticsearch/data
     ports:
       - ${ES_PORT}:9200
     environment:
-      - node.name=elasticsearch
+      - node.name=ecp-elasticsearch
       - cluster.name=${CLUSTER_NAME}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
@@ -115,7 +115,7 @@ services:
       elasticsearch:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
-    container_name: kibana
+    container_name: ecp-kibana
     volumes:
       - certs:/usr/share/kibana/config/certs:z
       - kibanadata:/usr/share/kibana/data
@@ -123,8 +123,8 @@ services:
     ports:
       - ${KIBANA_PORT}:5601
     environment:
-      - SERVER_NAME=kibana
-      - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
+      - SERVER_NAME=ecp-kibana
+      - ELASTICSEARCH_HOSTS=https://ecp-elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
@@ -150,7 +150,7 @@ services:
         elasticsearch:
           condition: service_healthy
       image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
-      container_name: fleet-server
+      container_name: ecp-fleet-server
       volumes:
         - certs:/certs:z
       ports:
@@ -162,9 +162,9 @@ services:
         - FLEET_SERVER_POLICY_ID=fleet-server-policy
         - FLEET_SERVER_ENABLE=1
         - KIBANA_FLEET_SETUP=1
-        - KIBANA_HOST=https://kibana:5601
-        - FLEET_URL=https://fleet-server:8220
-        - FLEET_SERVER_ELASTICSEARCH_HOST=https://elasticsearch:9200
+        - KIBANA_HOST=https://ecp-kibana:5601
+        - FLEET_URL=https://ecp-fleet-server:8220
+        - FLEET_SERVER_ELASTICSEARCH_HOST=https://ecp-elasticsearch:9200
         - FLEET_CA=/certs/ca/ca.crt
         - KIBANA_FLEET_USERNAME=elastic
         - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD}

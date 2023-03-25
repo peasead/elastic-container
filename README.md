@@ -52,14 +52,16 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 ```
 apt-get install jq git curl
 ```
-**Fedora:**  
-Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/fedora/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
+**CentOS/Fedora:**  
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/centos/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 dnf install jq git curl
 ```
 
 **Other Linux distributions:**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
+
+Arch Linux users should install `inetutils` and change the shell script from `hostname -I` to `hostname -i`.
 
 ## Usage
 
@@ -196,7 +198,7 @@ Staging the container images will:
 ```
 $ ./elastic-container.sh stage
 
-8.4.0: Pulling from elasticsearch/elasticsearch
+8.6.0: Pulling from elasticsearch/elasticsearch
 e7bd69ff4774: Pull complete
 d0a0f12aaf30: Pull complete
 ...
@@ -208,7 +210,7 @@ In `.env`, the variables are defined, any can be changed. **You must change the 
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
-STACK_VERSION="8.4.3"
+STACK_VERSION="8.6.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.

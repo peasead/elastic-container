@@ -250,7 +250,7 @@ case "${ACTION}" in
   echo "#####"
   echo "Restarting all Elastic Stack components."
   echo "#####"
-  ${COMPOSE} restart elasticsearch kibana fleet-server 
+  ${COMPOSE} restart elasticsearch kibana fleet-server
   ;;
 
 "status")
