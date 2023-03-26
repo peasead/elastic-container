@@ -210,7 +210,7 @@ In `.env`, the variables are defined, any can be changed. **You must change the 
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
-STACK_VERSION="8.6.0"
+STACK_VERSION="8.6.2"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
