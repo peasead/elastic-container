@@ -63,6 +63,18 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 Arch Linux users should install `inetutils` and change the shell script from `hostname -I` to `hostname -i`.
 
+**Windows 10/11 with WSL 2 (Ubuntu 20.04)**
+Make sure you are using WSL version 2. You can check the version using `wsl -l -v` in PowerShell. If the version is wrong you can change it with `wsl --set-version Ubuntu-20.04 2`
+
+```
+apt-get update
+apt-get install jq git curl
+```
+Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/ubuntu/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
+
+Once the Docker suite is installed run `sudo service docker start` to start it.
+
+
 ## Usage
 
 This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change the password in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying).
