@@ -63,7 +63,7 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 Arch Linux users should install `inetutils` and change the shell script from `hostname -I` to `hostname -i`.
 
-**Windows 10/11 with WSL 2 (Ubuntu 20.04)**
+**Windows 10/11 with WSL 2 (Ubuntu 20.04):**  
 Make sure you are using WSL version 2. You can check the version using `wsl -l -v` in PowerShell. If the version is wrong you can change it with `wsl --set-version Ubuntu-20.04 2`
 
 ```
