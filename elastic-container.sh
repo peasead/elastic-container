@@ -189,20 +189,25 @@ fi
 
 if docker compose >/dev/null; then
   COMPOSE="docker compose"
+  DOCKERORPODMAN="docker"
 elif command -v docker-compose >/dev/null; then
   COMPOSE="docker-compose"
+  DOCKERORPODMAN="docker"
+elif command -v podman-compose >/dev/null; then
+  COMPOSE="podman-compose"
+  DOCKERORPODMAN="podman"
 else
-  echo "elastic-container requires docker compose!"
+  echo "elastic-container requires docker compose or podman compose!"
   exit 2
 fi
 
 case "${ACTION}" in
 
 "stage")
-  # Collect the Elastic, Kibana, and Elastic-Agent Docker images
-  docker pull "docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}"
-  docker pull "docker.elastic.co/kibana/kibana:${STACK_VERSION}"
-  docker pull "docker.elastic.co/beats/elastic-agent:${STACK_VERSION}"
+  # Collect the Elastic, Kibana, and Elastic-Agent Container images
+  ${DOCKERORPODMAN} pull "docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}"
+  ${DOCKERORPODMAN} pull "docker.elastic.co/kibana/kibana:${STACK_VERSION}"
+  ${DOCKERORPODMAN} pull "docker.elastic.co/beats/elastic-agent:${STACK_VERSION}"
   ;;
 
 "start")
