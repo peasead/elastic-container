@@ -52,7 +52,7 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 ```
 apt-get install jq git curl
 ```
-**CentOS/Fedora:**  
+**CentOS/Fedora/Rocky9:**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/centos/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 dnf install jq git curl
@@ -60,10 +60,19 @@ dnf install jq git curl
 
 If you are wanting to use `podman` then a few things will need to be installed/adjusted.
 
-[Podman Compose](https://github.com/containers/podman-compose):
+If you are using a standard desktop environment:
+```
+sudo dnf install podman
+```
+If this is on a server and uses the Cockpit Web UI:
+```
+sudo dnf install cockpit-podman
+```
+
+Even though a Kubernetes YAML file is the prefered method for podman, [Podman Compose](https://github.com/containers/podman-compose) can leverage dockerfiles. Just install:
 
 ```
-sudo dnf install podman-compose`
+sudo dnf install podman-compose
 ```
 
 Podman executes containers in rootless mode by default. This can be changed by running them with `--privileged` flag if the user had sufficient privileges to launch them. The other way is by using `sudo`. In our case using `sudo` before the deploy script will provide sufficient permissions. 
