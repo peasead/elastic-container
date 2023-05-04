@@ -58,6 +58,17 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 dnf install jq git curl
 ```
 
+If you are wanting to use `podman` then a few things will need to be installed/adjusted.
+
+[Podman Compose](https://github.com/containers/podman-compose):
+
+```
+sudo dnf install podman-compose`
+```
+
+Podman executes containers in rootless mode by default. This can be changed by running them with `--privileged` flag if the user had sufficient privileges to launch them. The other way is by using `sudo`. In our case using `sudo` before the deploy script will provide sufficient permissions. 
+
+
 **Other Linux distributions:**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 
