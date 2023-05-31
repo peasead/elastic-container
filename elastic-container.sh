@@ -107,7 +107,7 @@ configure_kbn() {
 
           curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
             {
-              "query": "alert.attributes.tags: \"MacOS\"",
+              "query": "alert.attributes.tags: \"macOS\"",
               "action": "enable"
             }
             ' 1>&2
