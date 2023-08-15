@@ -13,7 +13,7 @@ If you're interested in more details regarding this project and what to do once 
 1. `Git clone` this repo
 2. Install prerequisites (see below)
 3. Change into the `elastic-container/` folder
-4. Change the default password of "changeme" in the `.env` file 
+4. Change the default password of `changeme` in the `.env` file (don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html))  
 5. Bulk enable pre-built detection rules by OS in the `.env` file (not required, see usage below)
 6. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
 7. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container start`
@@ -74,10 +74,9 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 Once the Docker suite is installed run `sudo service docker start` to start it.
 
-
 ## Usage
 
-This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change the password in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying).
+This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change the password in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying). Don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) 
 
 This should not be Internet exposed or used in a production environment.
 
@@ -219,11 +218,11 @@ d0a0f12aaf30: Pull complete
 
 ## Modifying
 
-In `.env`, the variables are defined, any can be changed. **You must change the default passwords.**
+In `.env`, the variables are defined, below are the variables that can be changed. **You must change the default passwords.**
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
-STACK_VERSION="8.8.0"
+STACK_VERSION="8.9.0"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
