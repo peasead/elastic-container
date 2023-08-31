@@ -56,11 +56,11 @@ configure_kbn() {
   while [ $i -gt 0 ]; do
     STATUS=$(curl -I -k --silent "${LOCAL_KBN_URL}" | head -n 1 | cut -d ' ' -f2)
     echo
-    echo "Attempting to enable the Detection Engine and install prebuilt Detection Rules"
+    echo "Attempting to enable the Detection Engine and install prebuilt Detection Rules."
 
     if [ "${STATUS}" == "302" ]; then
       echo
-      echo "Kibana is up. Proceeding"
+      echo "Kibana is up. Proceeding."
       echo
       output=$(curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPOST "${LOCAL_KBN_URL}/api/detection_engine/index")
       [[ ${output} =~ '"acknowledged":true' ]] || (
@@ -76,7 +76,7 @@ configure_kbn() {
       echo "Prepackaged rules installed!"
       echo
       if [[ "${LinuxDR}" -eq 0 && "${WindowsDR}" -eq 0 && "${MacOSDR}" -eq 0 ]]; then
-        echo "No detection rules enabled in the .env file, skipping detection rules enablement"
+        echo "No detection rules enabled in the .env file, skipping detection rules enablement."
         echo
         break
       else
@@ -218,18 +218,18 @@ case "${ACTION}" in
 
   get_host_ip
 
-  echo "Starting Elastic Stack network and containers"
+  echo "Starting Elastic Stack network and containers."
 
   ${COMPOSE} up -d --no-deps 
 
   configure_kbn 1>&2 2>&3
 
-  echo "Waiting 40 seconds for Fleet Server setup"
+  echo "Waiting 40 seconds for Fleet Server setup."
   echo
 
   sleep 40
 
-  echo "Populating Fleet Settings"
+  echo "Populating Fleet Settings."
   set_fleet_values > /dev/null 2>&1
   echo
 
