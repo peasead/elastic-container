@@ -85,7 +85,7 @@ configure_kbn() {
 
           curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
             {
-              "query": "alert.attributes.tags: \"Linux\"",
+              "query": "alert.attributes.tags: (\"Linux\" OR \"OS: Linux\")",
               "action": "enable"
             }
             ' 1>&2
@@ -96,7 +96,7 @@ configure_kbn() {
 
           curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
             {
-              "query": "alert.attributes.tags: \"Windows\"",
+              "query": "alert.attributes.tags: (\"Windows\" OR \"OS: Windows\")",
               "action": "enable"
             }
             ' 1>&2
@@ -107,7 +107,7 @@ configure_kbn() {
 
           curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
             {
-              "query": "alert.attributes.tags: \"macOS\"",
+              "query": "alert.attributes.tags: (\"macOS\" OR \"OS: macOS\")",
               "action": "enable"
             }
             ' 1>&2
