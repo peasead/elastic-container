@@ -231,3 +231,42 @@ If you want to use different Elastic Stack versions, you can change those as wel
 - [Elasticsearch](https://hub.docker.com/r/elastic/elasticsearch/tags?page=1&ordering=last_updated)
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 - [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
+
+## Automating
+
+To enroll an Agent you will need the enrollment token.
+You can get the token either under `https://<KIBANAHOST>:5601/app/fleet/enrollment-tokens` or via the API
+[https://www.elastic.co/guide/en/fleet/current/fleet-api-docs.html#get-enrollment-token-api](https://www.elastic.co/guide/en/fleet/current/fleet-api-docs.html#get-enrollment-token-api)
+
+```bash
+curl -k --request GET \
+   --url 'https://<KIBANAHOST>:5601/api/fleet/enrollment_api_keys' \
+   -u <USER>:<PASSWORD> \
+   --header 'Content-Type: application/json' \
+   --header 'kbn-xsrf: xx'
+```
+This will return the tokens in JSON:
+```json
+{
+  "list": [
+    {
+      "id": "461cc77f-e9dd-46f0-b5c8-7babf644b08f",
+      "active": true,
+      "api_key_id": "ZS7TYI4B02xLEiUBWuqK",
+      "api_key": "WlM3VFlJNEIwMnhMRWlVQld1cUs6b3JmRGRyTnBUSmVOc05DeU1NelJIZw==",
+      "name": "Default (461cc77f-e9dd-46f0-b5c8-7babf644b08f)",
+      "policy_id": "09528aeb-70c7-4448-91cf-0be1e6a1838a",
+      "created_at": "2024-03-21T11:44:08.721Z"
+    },
+[...]
+```
+
+With that information it is possible to enroll an Agent, e.g. via WinRM or Ansible:
+
+```powershell
+$ProgressPreference = 'SilentlyContinue'
+Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.12.2-windows-x86_64.zip -OutFile elastic-agent-8.12.2-windows-x86_64.zip
+Expand-Archive .\elastic-agent-8.12.2-windows-x86_64.zip -DestinationPath .
+cd elastic-agent-8.12.2-windows-x86_64
+.\elastic-agent.exe install --url=https://<FLEETHOST>:8220 --insecure -f --enrollment-token=<api_key>
+```
