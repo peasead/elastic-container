@@ -75,6 +75,7 @@ services:
       - esdata01:/usr/share/elasticsearch/data
     ports:
       - ${ES_PORT}:9200
+    restart: always
     environment:
       - node.name=ecp-elasticsearch
       - cluster.name=${CLUSTER_NAME}
@@ -122,6 +123,7 @@ services:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml:Z
     ports:
       - ${KIBANA_PORT}:5601
+    restart: always
     environment:
       - SERVER_NAME=ecp-kibana
       - ELASTICSEARCH_HOSTS=https://ecp-elasticsearch:9200
