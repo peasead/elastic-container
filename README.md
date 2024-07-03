@@ -52,7 +52,7 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 ```
 apt-get install jq git curl
 ```
-**CentOS/Fedora:**  
+**RPM distributions (CentOS/Fedora/Rocky/RHEL):**  
 Please follow the [Docker installation instructions](https://docs.docker.com/engine/install/centos/). Of specific note, you *must* install the `docker-compose-plugin`, which is different than `docker-compose`.
 ```
 dnf install jq git curl
