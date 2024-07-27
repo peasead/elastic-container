@@ -139,6 +139,17 @@ get_host_ip() {
 }
 
 set_fleet_values() {
+  # Get the current Fleet settings
+  CURRENT_SETTINGS=$(curl -s -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${KIBANA_HOST}/api/fleet/agents/setup" -H "Content-Type: application/json")
+
+  # Check if Fleet is already set up
+  if echo "$CURRENT_SETTINGS" | grep -q '"isInitialized": true'; then
+    echo "Fleet settings are already configured."
+    return
+  fi
+
+  echo "Fleet is not initialized, setting up Fleet..."
+  
   fingerprint=$(${COMPOSE} exec -w /usr/share/elasticsearch/config/certs/ca elasticsearch cat ca.crt | openssl x509 -noout -fingerprint -sha256 | cut -d "=" -f 2 | tr -d :)
   printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:${FLEET_PORT}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
   printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
