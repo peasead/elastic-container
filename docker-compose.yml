@@ -153,6 +153,7 @@ services:
       container_name: ecp-fleet-server
       volumes:
         - certs:/certs:z
+        - fleetserverdata:/usr/share/elastic-agent
       ports:
         - ${FLEET_PORT}:8220
       restart: always
@@ -179,4 +180,6 @@ volumes:
   esdata01:
     driver: local
   kibanadata:
+    driver: local
+  fleetserverdata:
     driver: local
