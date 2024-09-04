@@ -140,7 +140,7 @@ get_host_ip() {
 
 set_fleet_values() {
   # Get the current Fleet settings
-  CURRENT_SETTINGS=$(curl -s -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${KIBANA_HOST}/api/fleet/agents/setup" -H "Content-Type: application/json")
+  CURRENT_SETTINGS=$(curl -k -s -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${LOCAL_KBN_URL}/api/fleet/agents/setup" -H "Content-Type: application/json")
 
   # Check if Fleet is already set up
   if echo "$CURRENT_SETTINGS" | grep -q '"isInitialized": true'; then
