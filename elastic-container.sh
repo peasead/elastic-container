@@ -30,6 +30,19 @@ passphrase_reset() {
   fi
 }
 
+check_required_apps() {
+    apps=("jq" "curl")
+
+    for app in "${apps[@]}"; do
+        if ! command -v "$app" &>/dev/null; then
+            echo "The application '$app' is not installed."
+            exit 1
+        fi
+    done
+
+    echo "All required applications are installed."
+}
+
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
@@ -221,6 +234,8 @@ case "${ACTION}" in
 
 "start")
   passphrase_reset
+
+  check_required_apps
 
   get_host_ip
 
