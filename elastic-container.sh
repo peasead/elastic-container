@@ -21,7 +21,7 @@ HEADERS=(
 )
 
 passphrase_reset() {
-  if grep -Fq "changeme" .env; then
+  if grep -Fq "changeme" compose/.env; then
     echo "Sorry, looks like you haven't updated the passphrase from the default"
     echo "Please update the changeme passphrases in the .env file."
     exit 1
@@ -33,7 +33,7 @@ passphrase_reset() {
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
-  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
+  usage: ./elastic-container.sh [-v|-n] (stage|start|stop|restart|status|help)
   actions:
     stage     downloads all necessary images to local storage
     start     creates a container network and starts containers
@@ -45,7 +45,7 @@ usage() {
     help      print this message
   flags:
     -v        enable verbose output
-    -n        does not enable fleet
+    -n        disable fleet
 EOF
 }
 
@@ -239,7 +239,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers."
   
-  ${COMPOSE} ${COMPOSE_STRING} up -d :--no-deps
+  ${COMPOSE} ${COMPOSE_STRING} up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
