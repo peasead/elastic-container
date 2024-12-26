@@ -219,9 +219,9 @@ else
 fi
 
 if fleet=0; then
-  COMPOSE_STRING=" --file compose/no-fleet-docker-compose.yml"
+  COMPOSE_STRING=" --file no-fleet-docker-compose.yml"
 else
-  COMPOSE_STRING=" --file compose/docker-compose.yml"
+  COMPOSE_STRING=" --file docker-compose.yml"
 fi
 case "${ACTION}" in
 
