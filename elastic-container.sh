@@ -257,6 +257,7 @@ case "${ACTION}" in
     echo "Populating Fleet Settings."
     set_fleet_values > /dev/null 2>&1
     echo
+  fi
 
   echo "READY SET GO!"
   echo
