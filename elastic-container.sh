@@ -218,7 +218,7 @@ else
   exit 2
 fi
 
-if [ $fleet -eq 1 ]; then
+if [ $fleet -eq 0 ]; then
   COMPOSE_STRING=" --file no-fleet-docker-compose.yml"
 else
   COMPOSE_STRING=" --file docker-compose.yml"
@@ -243,7 +243,7 @@ case "${ACTION}" in
 
   configure_kbn 1>&2 2>&3
 
-  if fleet=0; then
+  if [ $fleet -eq 0 ]; then
   
     echo "Not waiting 40 seconds for Fleet Server setup."
     echo
