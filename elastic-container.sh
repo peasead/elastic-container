@@ -21,7 +21,7 @@ HEADERS=(
 )
 
 passphrase_reset() {
-  if grep -Fq "changeme" compose/.env; then
+  if grep -Fq "changeme" .env; then
     echo "Sorry, looks like you haven't updated the passphrase from the default"
     echo "Please update the changeme passphrases in the .env file."
     exit 1
