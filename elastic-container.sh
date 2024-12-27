@@ -186,11 +186,9 @@ while getopts ":vn" opt; do
   case "$opt" in
   v)
     verbose=1
-    echo "Moar info!!!"
     ;;
   n)
     fleet=0
-    echo "What did fleet ever do to you?"
     ;;
   *) ;;
   esac
@@ -245,7 +243,7 @@ case "${ACTION}" in
 
   if [ $fleet -eq 0 ]; then
   
-    echo "Not waiting 40 seconds for Fleet Server setup."
+    echo "Not waiting 40 seconds for Fleet Server setup. It is not used."
     echo
 
   else
