@@ -13,7 +13,7 @@ If you're interested in more details regarding this project and what to do once 
 1. `Git clone` this repo
 2. Install prerequisites (see below)
 3. Change into the `elastic-container/` folder
-4. Change the default password of `changeme` in the `.env` file located in the `compose` directory (don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html))  
+4. Change the default password of `changeme` in the `.env` file (don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html))  
 5. Bulk enable pre-built detection rules by OS in the `.env` file (not required, see usage below)
 6. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
 7. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container.sh start`
