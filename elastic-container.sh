@@ -218,7 +218,7 @@ else
   exit 2
 fi
 
-if fleet=0; then
+if [ $fleet -eq 1 ]; then
   COMPOSE_STRING=" --file no-fleet-docker-compose.yml"
 else
   COMPOSE_STRING=" --file docker-compose.yml"
