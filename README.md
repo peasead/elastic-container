@@ -232,6 +232,17 @@ If you want to use different Elastic Stack versions, you can change those as wel
 - [Kibana](https://hub.docker.com/r/elastic/kibana/tags?page=1&ordering=last_updated)
 - [Elastic-Agent](https://hub.docker.com/r/elastic/elastic-agent/tags?page=1&ordering=last_updated)
 
+### Increase JVM Heap Size
+
+The default heap size is 512M which may be insufficent in some cases. In that case we can change the heap size by editing `docker-compose.yml` and passing `ES_JAVA_OPTS` environment variable to elasticsearch container. 
+
+```yml
+  elasticsearch:
+   ...
+    environment:
++     - ES_JAVA_OPTS=-Xmx1g -Xms1g
+```
+
 ## Automating
 
 To enroll an Agent you will need the enrollment token.
