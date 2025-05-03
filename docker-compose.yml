@@ -137,7 +137,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -I -s --cacert config/certs/ca/ca.crt https://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "curl -I -s --cacert config/certs/ca/ca.crt https://localhost:5601 | grep -q 'HTTP/2 302'",
         ]
       interval: 10s
       timeout: 10s
@@ -149,7 +149,7 @@ services:
           condition: service_healthy
         elasticsearch:
           condition: service_healthy
-      image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
+      image: docker.elastic.co/elastic-agent/elastic-agent:${STACK_VERSION}
       container_name: ecp-fleet-server
       volumes:
         - certs:/certs:z
