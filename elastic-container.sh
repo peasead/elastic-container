@@ -30,6 +30,19 @@ passphrase_reset() {
   fi
 }
 
+check_required_apps() {
+    apps=("jq" "curl")
+
+    for app in "${apps[@]}"; do
+        if ! command -v "$app" &>/dev/null; then
+            echo "The application '$app' is not installed."
+            exit 1
+        fi
+    done
+
+    echo "All required applications are installed."
+}
+
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
@@ -152,7 +165,7 @@ set_fleet_values() {
   echo "Fleet is not initialized, setting up Fleet..."
   
   fingerprint=$(${COMPOSE} exec -w /usr/share/elasticsearch/config/certs/ca elasticsearch cat ca.crt | openssl x509 -noout -fingerprint -sha256 | cut -d "=" -f 2 | tr -d :)
-  printf '{"fleet_server_hosts": ["%s"]}' "https://${ipvar}:${FLEET_PORT}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/settings" -d @- | jq
+  printf '{"host_urls": ["%s"], "name": "default", "is_default": true}' "https://${ipvar}:${FLEET_PORT}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPOST "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/fleet_server_hosts" -d @- | jq
   printf '{"hosts": ["%s"]}' "https://${ipvar}:9200" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
   printf '{"ca_trusted_fingerprint": "%s"}' "${fingerprint}" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
   printf '{"config_yaml": "%s"}' "ssl.verification_mode: certificate" | curl -k --silent --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${HEADERS[@]}" "${LOCAL_KBN_URL}/api/fleet/outputs/fleet-default-output" -d @- | jq
@@ -232,6 +245,8 @@ case "${ACTION}" in
 
 "start")
   passphrase_reset
+
+  check_required_apps
 
   get_host_ip
 
