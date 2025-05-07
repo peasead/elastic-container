@@ -46,7 +46,7 @@ check_required_apps() {
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
-  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
+  usage: ./elastic-container.sh [-v|-n] (stage|start|stop|restart|status|help)
   actions:
     stage     downloads all necessary images to local storage
     start     creates a container network and starts containers
@@ -58,6 +58,7 @@ usage() {
     help      print this message
   flags:
     -v        enable verbose output
+    -n        disable fleet
 EOF
 }
 
@@ -192,15 +193,20 @@ clear_documents() {
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 
 verbose=0
+fleet=1
 
-while getopts "v" opt; do
+while getopts ":vn" opt; do
   case "$opt" in
   v)
     verbose=1
     ;;
+  n)
+    fleet=0
+    ;;
   *) ;;
   esac
 done
+
 
 shift $((OPTIND - 1))
 
@@ -223,6 +229,11 @@ else
   exit 2
 fi
 
+if [ $fleet -eq 0 ]; then
+  COMPOSE_STRING=" --file no-fleet-docker-compose.yml"
+else
+  COMPOSE_STRING=" --file docker-compose.yml"
+fi
 case "${ACTION}" in
 
 "stage")
@@ -240,19 +251,26 @@ case "${ACTION}" in
   get_host_ip
 
   echo "Starting Elastic Stack network and containers."
-
-  ${COMPOSE} up -d --no-deps 
+  
+  ${COMPOSE} ${COMPOSE_STRING} up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
-  echo "Waiting 40 seconds for Fleet Server setup."
-  echo
+  if [ $fleet -eq 0 ]; then
+  
+    echo "Not waiting 40 seconds for Fleet Server setup. It is not used."
+    echo
 
-  sleep 40
+  else
+    echo "Waiting 40 seconds for Fleet Server setup."
+    echo
 
-  echo "Populating Fleet Settings."
-  set_fleet_values > /dev/null 2>&1
-  echo
+    sleep 40
+
+    echo "Populating Fleet Settings."
+    set_fleet_values > /dev/null 2>&1
+    echo
+  fi
 
   echo "READY SET GO!"
   echo
@@ -262,17 +280,19 @@ case "${ACTION}" in
   echo
   ;;
 
+
+
 "stop")
   echo "Stopping running containers."
 
-  ${COMPOSE} stop 
+  ${COMPOSE} ${COMPOSE_STRING} stop 
   ;;
 
 "destroy")
   echo "#####"
   echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
-  ${COMPOSE} down -v
+  ${COMPOSE} ${COMPOSE_STRING} down -v
   ;;
 
 "restart")
@@ -283,7 +303,7 @@ case "${ACTION}" in
   ;;
 
 "status")
-  ${COMPOSE} ps | grep -v setup
+  ${COMPOSE} ${COMPOSE_STRING} ps | grep -v setup
   ;;
 
 "clear")
