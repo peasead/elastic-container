@@ -229,7 +229,11 @@ case "${ACTION}" in
   # Collect the Elastic, Kibana, and Elastic-Agent Docker images
   docker pull "docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}"
   docker pull "docker.elastic.co/kibana/kibana:${STACK_VERSION}"
-  docker pull "docker.elastic.co/beats/elastic-agent:${STACK_VERSION}"
+  if [[ "${STACK_VERSION}" =~ ^9\..* ]]; then
+    docker pull "docker.elastic.co/elastic-agent/elastic-agent:${STACK_VERSION}"
+  else
+    docker pull "docker.elastic.co/beats/elastic-agent:${STACK_VERSION}"
+  fi
   ;;
 
 "start")
