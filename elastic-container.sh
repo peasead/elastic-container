@@ -4,6 +4,7 @@ set -o pipefail
 ipvar="0.0.0.0"
 
 # These should be set in the .env file
+declare PREBUILT_DETECTION_RULES
 declare LinuxDR
 declare WindowsDR
 declare MacOSDR
@@ -69,7 +70,7 @@ configure_kbn() {
   while [ $i -gt 0 ]; do
     STATUS=$(curl -I -k --silent "${LOCAL_KBN_URL}" | head -n 1 | cut -d ' ' -f2)
     echo
-    echo "Attempting to enable the Detection Engine and install prebuilt Detection Rules."
+    echo "Attempting to enable the Detection Engine and install prebuilt Detection Rules (if enabled)."
 
     if [ "${STATUS}" == "302" ]; then
       echo
@@ -81,53 +82,56 @@ configure_kbn() {
         echo "Detection Engine setup failed :-("
         exit 1
       )
-
-      echo "Detection engine enabled. Installing prepackaged rules."
-      curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/detection_engine/rules/prepackaged" 1>&2
-
-      echo
-      echo "Prepackaged rules installed!"
-      echo
-      if [[ "${LinuxDR}" -eq 0 && "${WindowsDR}" -eq 0 && "${MacOSDR}" -eq 0 ]]; then
-        echo "No detection rules enabled in the .env file, skipping detection rules enablement."
+      echo "Detection engine enabled."
+      if [ "${PREBUILT_DETECTION_RULES:-1}" -eq 1 ]; then
+        echo "Installing prepackaged rules."
+        curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -XPUT "${LOCAL_KBN_URL}/api/detection_engine/rules/prepackaged" 1>&2
         echo
-        break
+        echo "Prepackaged rules installed!"
+        echo
+        if [[ "${LinuxDR}" -eq 0 && "${WindowsDR}" -eq 0 && "${MacOSDR}" -eq 0 ]]; then
+          echo "No detection rules enabled in the .env file, skipping detection rules enablement."
+          echo
+          break
+        else
+          echo "Enabling detection rules"
+          if [ "${LinuxDR}" -eq 1 ]; then
+
+            curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
+              {
+                "query": "alert.attributes.tags: (\"Linux\" OR \"OS: Linux\")",
+                "action": "enable"
+              }
+              ' 1>&2
+            echo
+            echo "Successfully enabled Linux detection rules"
+          fi
+          if [ "${WindowsDR}" -eq 1 ]; then
+
+            curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
+              {
+                "query": "alert.attributes.tags: (\"Windows\" OR \"OS: Windows\")",
+                "action": "enable"
+              }
+              ' 1>&2
+            echo
+            echo "Successfully enabled Windows detection rules"
+          fi
+          if [ "${MacOSDR}" -eq 1 ]; then
+
+            curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
+              {
+                "query": "alert.attributes.tags: (\"macOS\" OR \"OS: macOS\")",
+                "action": "enable"
+              }
+              ' 1>&2
+            echo
+            echo "Successfully enabled MacOS detection rules"
+          fi
+        fi
       else
-        echo "Enabling detection rules"
-        if [ "${LinuxDR}" -eq 1 ]; then
-
-          curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
-            {
-              "query": "alert.attributes.tags: (\"Linux\" OR \"OS: Linux\")",
-              "action": "enable"
-            }
-            ' 1>&2
-          echo
-          echo "Successfully enabled Linux detection rules"
-        fi
-        if [ "${WindowsDR}" -eq 1 ]; then
-
-          curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
-            {
-              "query": "alert.attributes.tags: (\"Windows\" OR \"OS: Windows\")",
-              "action": "enable"
-            }
-            ' 1>&2
-          echo
-          echo "Successfully enabled Windows detection rules"
-        fi
-        if [ "${MacOSDR}" -eq 1 ]; then
-
-          curl -k --silent "${HEADERS[@]}" --user "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${LOCAL_KBN_URL}/api/detection_engine/rules/_bulk_action" -d'
-            {
-              "query": "alert.attributes.tags: (\"macOS\" OR \"OS: macOS\")",
-              "action": "enable"
-            }
-            ' 1>&2
-          echo
-          echo "Successfully enabled MacOS detection rules"
-        fi
-      fi
+        echo "Skipping prepackaged rules installation!"
+      fi     
       echo
       break
     else
