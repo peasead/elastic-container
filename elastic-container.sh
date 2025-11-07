@@ -46,7 +46,7 @@ check_required_apps() {
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
-  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
+  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|custom|help)
   actions:
     stage     downloads all necessary images to local storage
     start     creates a container network and starts containers
@@ -54,6 +54,7 @@ usage() {
     destroy   stops and removes the containers, the network, and volumes created
     restart   restarts all the stack containers
     status    check the status of the stack containers
+    custom    start only the stuff you want using the service name (elasticsearch, kibana, fleet-server)
     clear     clear all documents in logs and metrics indexes
     help      print this message
   flags:
@@ -206,13 +207,16 @@ shift $((OPTIND - 1))
 
 [ "${1:-}" = "--" ] && shift
 
-ACTION="${*:-help}"
+ACTION="${1:-help}"
+shift || true
 
 if [ $verbose -eq 1 ]; then
   exec 3<>/dev/stderr
 else
   exec 3<>/dev/null
 fi
+
+
 
 if docker compose >/dev/null; then
   COMPOSE="docker compose"
@@ -241,7 +245,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers."
 
-  ${COMPOSE} up -d --no-deps 
+  ${COMPOSE} up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
@@ -274,8 +278,56 @@ case "${ACTION}" in
   echo "#####"
   echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
-  ${COMPOSE} down -v
+  ${COMPOSE} down -v 
   ;;
+
+"custom")
+  passphrase_reset
+
+  check_required_apps
+
+  get_host_ip
+
+  echo "Starting Custom Elastic Stack network and containers."
+  ${COMPOSE} up -d "$@"
+  sleep 5
+    for arg in "$@"; do
+      case "$arg" in
+        "elasticsearch")
+          echo "Running config Security Setup..."
+          ${COMPOSE} up -d setup
+          sleep 10
+          ;;
+        "kibana")
+          echo "Waiting for kibana to start..."
+          sleep 40
+          echo "Running config for Kibana service..."
+          configure_kbn 1>&2 2>&3
+          echo "Kibana Configured..."
+          ;;
+        "fleet-server")
+          echo "Running config for Fleet service..."
+          set_fleet_values > /dev/null 2>&1
+          sleep 10
+          ;;
+        *)
+          echo "⚠️  Unknown custom option: $arg"
+          ;;
+      esac
+    done
+  echo "READY SET GO!"
+  echo
+  echo "Browse to https://localhost:${KIBANA_PORT}"
+  if [ $verbose -eq 1 ]; then
+      echo "Username: ${ELASTIC_USERNAME}"
+      echo "Passphrase: ${ELASTIC_PASSWORD}"
+  fi
+  echo
+  ;;
+
+  *)
+    echo "Unknown option: $1"
+    ;;
 
 "restart")
   echo "#####"
