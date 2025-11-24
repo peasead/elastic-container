@@ -89,8 +89,9 @@ def stage(ctx):
 
 
 @cli.command()
+@click.option('--force-setup', is_flag=True, help='Force full setup even if containers exist')
 @click.pass_context
-def start(ctx):
+def start(ctx, force_setup):
     """Create container network and start all stack containers"""
     verbose = ctx.obj['verbose']
     
@@ -115,6 +116,55 @@ def start(ctx):
         # Check Docker availability
         if not docker_manager.check_docker_available():
             sys.exit(1)
+        
+        # Check if containers already exist
+        containers_exist, containers_running = docker_manager.check_containers_exist()
+        
+        if containers_exist and not force_setup:
+            if containers_running:
+                click.echo()
+                click.secho("✓ Containers are already running!", fg="green", bold=True)
+                click.echo()
+                click.secho(f"Browse to {config.local_kibana_url}", fg="cyan", bold=True)
+                click.echo()
+                if verbose:
+                    click.echo("Use 'python elastic-container.py status' to check container status")
+                    click.echo("Use 'python elastic-container.py --force-setup start' to reconfigure")
+                sys.exit(0)
+            else:
+                click.echo()
+                click.secho("🔄 Containers exist but are stopped. Starting them...", fg="cyan", bold=True)
+                click.echo()
+                
+                # Just start existing containers (quick)
+                if not docker_manager.start():
+                    sys.exit(1)
+                
+                click.echo()
+                click.secho("=" * 70, fg="green", bold=True)
+                click.secho("✓ Containers started successfully!", fg="green", bold=True)
+                click.secho("=" * 70, fg="green", bold=True)
+                click.echo()
+                click.secho(f"Browse to {config.local_kibana_url}", fg="cyan", bold=True)
+                click.echo()
+                
+                if verbose:
+                    click.secho("Login Credentials:", fg="yellow", bold=True)
+                    click.echo(f"  Username:   {config.elastic_username}")
+                    click.echo(f"  Password:   {config.elastic_password}")
+                    click.echo()
+                
+                click.secho("Note:", fg="yellow")
+                click.echo("  • Existing configuration preserved")
+                click.echo("  • Use --force-setup flag to reconfigure if needed")
+                click.echo()
+                
+                sys.exit(0)
+        
+        # First-time setup or forced setup
+        if force_setup:
+            click.echo()
+            click.secho("🔧 Force setup requested - running full configuration...", fg="yellow")
         
         # Get host IP for Fleet configuration
         host_ip = get_host_ip()
@@ -191,6 +241,23 @@ def stop(ctx):
         if not docker_manager.check_docker_available():
             sys.exit(1)
         
+        # Check if containers exist
+        containers_exist, containers_running = docker_manager.check_containers_exist()
+        
+        if not containers_exist:
+            click.echo()
+            click.secho("✗ No containers found!", fg="red", bold=True)
+            click.echo()
+            click.echo("Run 'python elastic-container.py start' to create containers first.")
+            click.echo()
+            sys.exit(1)
+        
+        if not containers_running:
+            click.echo()
+            click.secho("✓ Containers are already stopped", fg="green")
+            click.echo()
+            sys.exit(0)
+        
         if docker_manager.stop():
             sys.exit(0)
         else:
@@ -249,6 +316,30 @@ def restart(ctx):
         if not docker_manager.check_docker_available():
             sys.exit(1)
         
+        # Check if containers exist
+        containers_exist, containers_running = docker_manager.check_containers_exist()
+        
+        if not containers_exist:
+            click.echo()
+            click.secho("✗ No containers found!", fg="red", bold=True)
+            click.echo()
+            click.echo("Run 'python elastic-container.py start' to create and start containers first.")
+            click.echo()
+            sys.exit(1)
+        
+        if not containers_running:
+            click.echo()
+            click.secho("⚠ Containers exist but are not running", fg="yellow")
+            click.echo("Starting them instead of restarting...")
+            click.echo()
+            
+            if docker_manager.start():
+                click.secho("✓ Containers started successfully!", fg="green")
+                sys.exit(0)
+            else:
+                sys.exit(1)
+        
+        # Containers exist and are running - restart them
         if docker_manager.restart():
             sys.exit(0)
         else:

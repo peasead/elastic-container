@@ -314,6 +314,40 @@ class DockerManager:
         click.echo('\n'.join(filtered_lines))
         return True
     
+    def check_containers_exist(self) -> tuple[bool, bool]:
+        """
+        Check if containers exist and whether they're running
+        
+        Returns:
+            Tuple of (containers_exist, containers_running)
+        """
+        # Check all containers including stopped ones
+        exit_code, stdout, stderr = self._run_compose(["ps", "-a"], check=False)
+        
+        if exit_code != 0:
+            return False, False
+        
+        # Check for main containers (elasticsearch, kibana, fleet-server)
+        main_containers = ["elasticsearch", "kibana", "fleet-server"]
+        found_containers = []
+        running_containers = []
+        
+        for line in stdout.split('\n'):
+            line_lower = line.lower()
+            for container in main_containers:
+                if container in line_lower:
+                    found_containers.append(container)
+                    # Check if running (has "Up" in status or "running")
+                    if 'up' in line_lower or 'running' in line_lower:
+                        running_containers.append(container)
+        
+        # Containers exist if we found at least 2 of the 3 main ones
+        containers_exist = len(found_containers) >= 2
+        # All running if we found all 3 running
+        all_running = len(running_containers) >= 3
+        
+        return containers_exist, all_running
+    
     def get_ca_fingerprint(self) -> Optional[str]:
         """
         Extract CA certificate fingerprint from Elasticsearch container
