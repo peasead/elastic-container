@@ -3,6 +3,7 @@ Utility functions for Elastic Container
 System checks, IP detection, and command execution helpers
 """
 
+import os
 import subprocess
 import sys
 import platform
@@ -10,9 +11,29 @@ import click
 from typing import Tuple, Optional
 
 
+def _is_wsl() -> bool:
+    """
+    Detect if running in Windows Subsystem for Linux (WSL)
+    
+    Returns:
+        True if running in WSL, False otherwise
+    """
+    try:
+        # Check for WSL-specific file
+        if os.path.exists('/proc/version'):
+            with open('/proc/version', 'r') as f:
+                return 'microsoft' in f.read().lower() or 'wsl' in f.read().lower()
+    except:
+        pass
+    
+    # Check WSL environment variable
+    return 'WSL_DISTRO_NAME' in os.environ or 'WSL_INTEROP' in os.environ
+
+
 def get_host_ip() -> str:
     """
     Detect the host's IP address based on operating system
+    Supports: Linux, macOS, Windows (native), and WSL
     
     Returns:
         IP address as string, defaults to "0.0.0.0" if detection fails
@@ -21,16 +42,27 @@ def get_host_ip() -> str:
     
     try:
         if os_name == "Linux":
-            # Use hostname -I on Linux
-            result = subprocess.run(
-                ["hostname", "-I"],
-                capture_output=True,
-                text=True,
-                check=True
-            )
-            # Get first IP from the output
-            ip = result.stdout.strip().split()[0]
-            return ip
+            # Check if running in WSL
+            if _is_wsl():
+                # In WSL, use hostname command which works with Docker Desktop
+                result = subprocess.run(
+                    ["hostname", "-I"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                ip = result.stdout.strip().split()[0]
+                return ip
+            else:
+                # Native Linux
+                result = subprocess.run(
+                    ["hostname", "-I"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                ip = result.stdout.strip().split()[0]
+                return ip
             
         elif os_name == "Darwin":  # macOS
             # Use ifconfig en0 on macOS
@@ -47,7 +79,29 @@ def get_host_ip() -> str:
                     ip = line.split()[1]
                     return ip
         
-        # Default fallback
+        elif os_name == "Windows":
+            # Native Windows - use ipconfig
+            result = subprocess.run(
+                ["ipconfig"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Parse ipconfig output for IPv4 address
+            # Look for first non-localhost IPv4 address
+            for line in result.stdout.split('\n'):
+                line = line.strip()
+                if 'IPv4 Address' in line or 'IPv4-Adresse' in line:
+                    # Format: "   IPv4 Address. . . . . . . . . . . : 192.168.1.100"
+                    parts = line.split(':')
+                    if len(parts) >= 2:
+                        ip = parts[1].strip()
+                        # Skip localhost
+                        if not ip.startswith('127.'):
+                            return ip
+        
+        # Default fallback - works for local Docker
         click.secho("⚠ Warning: Could not detect IP address, using 0.0.0.0", fg="yellow")
         return "0.0.0.0"
         
