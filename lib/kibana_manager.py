@@ -142,7 +142,7 @@ class KibanaManager:
                 headers=self.headers,
                 auth=self.auth,
                 verify=False,
-                timeout=60
+                timeout=180
             )
             
             if response.status_code in [200, 201]:
@@ -180,7 +180,7 @@ class KibanaManager:
                 auth=self.auth,
                 json=payload,
                 verify=False,
-                timeout=60
+                timeout=120
             )
             
             if response.status_code in [200, 201]:

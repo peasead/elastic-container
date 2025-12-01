@@ -151,7 +151,7 @@ class DockerManager:
             True on success, False on failure
         """
         click.echo()
-        click.secho("Pulling Docker images...", fg="cyan", bold=True)
+        click.secho("Staging Docker images...", fg="cyan")
         click.echo()
         
         images = [
@@ -176,7 +176,7 @@ class DockerManager:
             click.secho(f"✓ Pulled {image}", fg="green")
         
         click.echo()
-        click.secho("All images pulled successfully!", fg="green", bold=True)
+        click.secho("✓ Images staged successfully", fg="green")
         return True
     
     def start(self) -> bool:
@@ -222,19 +222,20 @@ class DockerManager:
             True on success, False on failure
         """
         click.echo()
-        click.secho("Stopping running containers...", fg="cyan", bold=True)
+        click.secho("Stopping containers...", fg="cyan")
         click.echo()
         
         exit_code, stdout, stderr = self._run_compose(["stop"], check=False)
         
         if exit_code != 0:
-            click.secho(f"✗ Failed to stop containers", fg="red")
+            click.secho("✗ Failed to stop containers", fg="red")
             click.echo(stderr)
             return False
         
         if stdout:
             click.echo(stdout)
         
+        click.echo()
         click.secho("✓ Containers stopped", fg="green")
         return True
     
@@ -246,21 +247,20 @@ class DockerManager:
             True on success, False on failure
         """
         click.echo()
-        click.secho("#####", fg="yellow")
-        click.secho("Stopping and removing the containers, network, and volumes created.", fg="yellow")
-        click.secho("#####", fg="yellow")
+        click.secho("Destroying Elastic Stack...", fg="cyan")
         click.echo()
         
         exit_code, stdout, stderr = self._run_compose(["down", "-v"], check=False)
         
         if exit_code != 0:
-            click.secho(f"✗ Failed to destroy stack", fg="red")
+            click.secho("✗ Failed to destroy stack", fg="red")
             click.echo(stderr)
             return False
         
         if stdout:
             click.echo(stdout)
         
+        click.echo()
         click.secho("✓ Stack destroyed", fg="green")
         return True
     
@@ -272,9 +272,7 @@ class DockerManager:
             True on success, False on failure
         """
         click.echo()
-        click.secho("#####", fg="cyan")
-        click.secho("Restarting all Elastic Stack components.", fg="cyan")
-        click.secho("#####", fg="cyan")
+        click.secho("Restarting containers...", fg="cyan")
         click.echo()
         
         exit_code, stdout, stderr = self._run_compose(
@@ -283,13 +281,14 @@ class DockerManager:
         )
         
         if exit_code != 0:
-            click.secho(f"✗ Failed to restart containers", fg="red")
+            click.secho("✗ Failed to restart containers", fg="red")
             click.echo(stderr)
             return False
         
         if stdout:
             click.echo(stdout)
         
+        click.echo()
         click.secho("✓ Containers restarted", fg="green")
         return True
     
