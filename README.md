@@ -6,7 +6,7 @@ If you're interested in more details regarding this project and what to do once 
 
 :warning: This is not an Elastic created, sponsored, or maintained project. Elastic is not responsible for this projects design or implementation.
 
-[![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
+<img width="256" height="256" alt="ecp-logo" src="https://github.com/user-attachments/assets/af3be09e-70aa-4ca9-97a9-5701fc3e43d1"/>
 
 ## Steps
 
@@ -15,11 +15,10 @@ If you're interested in more details regarding this project and what to do once 
 3. Change into the `elastic-container/` folder
 4. Change the default password of `changeme` in the `.env` file (don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html))  
 5. Bulk enable pre-built detection rules by OS in the `.env` file (not required, see usage below)
-6. Create a Python virtual environment: `python3.11 -m venv venv`
+6. Create a Python virtual environment: `python -m venv venv`
 7. Activate the virtual environment and install dependencies: `source venv/bin/activate && pip install -r requirements.txt`
 8. Execute the Python script with the start command: `python elastic-container.py start`
-9. Wait for the prompt to tell you to browse to https://localhost:5601 \
-(You may be presented a browser warning due to the self-signed certificates. You can type `thisisnotsafe` or click to proceed after which you will be directed to the Elastic log in screen)
+9. Wait for the prompt to tell you to browse to https://localhost:5601
 
 ## Requirements
 
@@ -123,6 +122,26 @@ This uses default creds of `elastic:changeme` and is intended purely for securit
 
 This should not be Internet exposed or used in a production environment.
 
+```bash
+Usage: elastic-container.py [OPTIONS] COMMAND [ARGS]...
+
+Elastic Container - Manage your containerized Elastic Stack
+
+Options:
+  -v, --verbose  Enable verbose output
+  --help         Show this message and exit.
+
+Commands:
+  clear    Clear all documents in logs and metrics data streams
+  destroy  Stop and remove containers, networks, and volumes
+  help     Show this help message
+  restart  Restart all Elastic Stack containers
+  stage    Download all necessary Docker images to local storage
+  start    Create container network and start all stack containers
+  status   Check the status of all stack containers
+  stop     Stop running containers without removing them
+```
+
 ### Enable Pre-Built Detection Rules
 
 If you want to bulk enable Elastic's pre-built detection rules by OS, on startup, you can change the value of the chosen OS in the `.env` file from 0 to 1.
@@ -138,25 +157,23 @@ MacOSDR=0
 
 ### Starting
 
-**If you have not [changed the default passwords](https://github.com/peasead/elastic-container/blob/main/README.md#modifying) in the `.env` file, the script will exit.**
-
 Starting will:
 - create a network called `elastic`
 - download the Elasticsearch, Kibana, and Elastic-Agent Docker images defined in the script
 - start Elasticsearch, Kibana, and the Elastic-Agent configured as a Fleet Server w/all settings needed for Fleet and the Detection Engine
 
 ```
-# Activate virtual environment (if not already active)
+Activate virtual environment (if not already active)  
 $ source venv/bin/activate
 
-# Start the stack
+Start the stack  
 $ python elastic-container.py start
 
 ...
- ⠿ Container elasticsearch-security-setup  Healthy 7.3s
- ⠿ Container elasticsearch                 Healthy 39.3s
- ⠿ Container kibana                        Healthy 59.3s
- ⠿ Container elastic-agent                 Started 59.7s
+ ⠿ Container elasticsearch-security-setup  Healthy 7.3s  
+ ⠿ Container elasticsearch                 Healthy 39.3s  
+ ⠿ Container kibana                        Healthy 59.3s  
+ ⠿ Container elastic-agent                 Started 59.7s  
 
 Attempting to enable the Detection Engine and Prebuilt-Detection Rules
 
@@ -170,10 +187,9 @@ Waiting 40 seconds for Fleet Server setup
 
 Populating Fleet Settings
 
-READY SET GO!
-
 Browse to https://localhost:5601
 ```
+
 After a few minutes, when prompted, browse to https://localhost:5601 and log in with your configured credentials.
 
 **Subsequent starts are much faster** - if containers already exist and are running, the script will detect this and complete instantly. If containers exist but are stopped, it will start them quickly (~30 seconds) without reconfiguring.
@@ -284,7 +300,7 @@ In `.env`, the variables are defined, below are the variables that can be change
 ```
 ELASTIC_PASSWORD="changeme"
 KIBANA_PASSWORD="changeme"
-STACK_VERSION="8.14.0"
+STACK_VERSION="9.2.1"
 ```
 
 If you want to change the default values, simply replace whatever is appropriate in the variable declaration.
@@ -339,8 +355,8 @@ With that information it is possible to enroll an Agent, e.g. via WinRM or Ansib
 
 ```powershell
 $ProgressPreference = 'SilentlyContinue'
-Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.12.2-windows-x86_64.zip -OutFile elastic-agent-8.12.2-windows-x86_64.zip
-Expand-Archive .\elastic-agent-8.12.2-windows-x86_64.zip -DestinationPath .
-cd elastic-agent-8.12.2-windows-x86_64
+Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-[version]-windows-x86_64.zip -OutFile elastic-agent-[version]-windows-x86_64.zip
+Expand-Archive .\elastic-agent-[version]-windows-x86_64.zip -DestinationPath .
+cd elastic-agent-[version]-windows-x86_64
 .\elastic-agent.exe install --url=https://<FLEETHOST>:8220 --insecure -f --enrollment-token=<api_key>
 ```
