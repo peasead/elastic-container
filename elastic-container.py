@@ -34,19 +34,7 @@ BANNER = """
 @click.option('-v', '--verbose', is_flag=True, help='Enable verbose output')
 @click.pass_context
 def cli(ctx, verbose):
-    """
-    Elastic Container - Manage your containerized Elastic Stack
-    
-    Commands:
-      stage     Download all Docker images to local storage
-      start     Start the Elastic Stack containers
-      stop      Stop running containers without removing them
-      destroy   Stop and remove containers, networks, and volumes
-      restart   Restart all stack containers
-      status    Check the status of stack containers
-      clear     Clear all documents in logs and metrics indexes
-      help      Show this help message
-    """
+    """Elastic Container - Manage your containerized Elastic Stack"""
     # Store verbose flag in context for subcommands
     ctx.ensure_object(dict)
     ctx.obj['verbose'] = verbose
