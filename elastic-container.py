@@ -4,8 +4,6 @@ Elastic Container - Python Edition
 
 A 100% containerized Elastic Stack with Elasticsearch, Kibana, Fleet,
 and the Detection Engine all pre-configured and ready to use.
-
-This is a Python port of the elastic-container.sh bash script.
 """
 
 import sys
