@@ -198,7 +198,7 @@ def start(ctx, force_setup):
         # Success message
         click.echo()
         click.secho("=" * 70, fg="green", bold=True)
-        click.secho("🚀 READY SET GO!", fg="green", bold=True)
+        click.secho("✓ Elastic Stack started successfully", fg="green", bold=True)
         click.secho("=" * 70, fg="green", bold=True)
         click.echo()
         click.secho(f"Browse to {config.local_kibana_url}", fg="cyan", bold=True)
