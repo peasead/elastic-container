@@ -6,7 +6,9 @@ If you're interested in more details regarding this project and what to do once 
 
 :warning: This is not an Elastic created, sponsored, or maintained project. Elastic is not responsible for this projects design or implementation.
 
-<img width="256" height="256" alt="ecp-logo" src="https://github.com/user-attachments/assets/af3be09e-70aa-4ca9-97a9-5701fc3e43d1"/>
+<p align="center">
+<img width="256" height="256" alt="ecp-logo" src="https://github.com/user-attachments/assets/639b56e0-1429-49fe-b3ad-275666412a92">
+</p>
 
 ## Steps
 
