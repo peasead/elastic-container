@@ -307,10 +307,9 @@ docker run --rm -v "$(pwd):/work" -w /work ghcr.io/tweag/nickel:1.10.0 export ni
 ### Using generated output
 
 - **Local Docker** – After generating `.env` (e.g. `./scripts/nickel-export.sh local-docker generated`), copy `generated/.env` to `.env` if you want to use it with the existing workflow, then run `./elastic-container.sh start` as usual. Or keep using your current `.env`; Nickel is only an optional source.
-- **Minikube** – Start Minikube, then apply the generated manifest: `kubectl apply -f generated/minikube/stack.yaml`. You may need to handle TLS and Fleet Server separately for full parity with the local Docker setup.
-- **AWS / GCP** – Apply the generated YAML to your EKS or GKE cluster with `kubectl apply -f generated/aws/stack.yaml` or `kubectl apply -f generated/gcp/stack.yaml`. Configure cluster access (e.g. `aws eks update-kubeconfig`, `gcloud container clusters get-credentials`) first.
+- **Minikube / AWS / GCP** – The K8s manifests enable TLS. Run `./scripts/generate-k8s-tls-certs.sh` once to create the TLS secrets, then apply the stack (e.g. `kubectl apply -f generated/minikube/stack.yaml`). See [nickel/README.md](nickel/README.md) for full steps and access via **https://** (accept the self-signed cert in the browser).
 
-The Kubernetes targets produce a single stack (Elasticsearch + Kibana + secrets); they do not include the full TLS/Fleet setup from the Docker Compose stack. Use them as a starting point and adapt to your cluster (storage, ingress, secrets management).
+The Kubernetes targets produce an Elasticsearch + Kibana stack with TLS and credential secrets. Use them as a starting point and adapt to your cluster (storage, ingress, secrets management).
 
 ## Automating
 

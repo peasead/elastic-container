@@ -96,13 +96,25 @@ let kibana_svc = config.KIBANA_SVC in
                 name = "kibana",
                 image = "docker.elastic.co/kibana/kibana:%{stack_version}",
                 env = [
-                  { name = "ELASTICSEARCH_HOSTS", value = "http://%{es_svc}:9200" },
+                  { name = "SERVER_NAME", value = kibana_svc },
+                  { name = "ELASTICSEARCH_HOSTS", value = "https://%{es_svc}:9200" },
                   { name = "ELASTICSEARCH_USERNAME", value = "kibana_system" },
-                  { name = "ELASTICSEARCH_PASSWORD", valueFrom = { secretKeyRef = { name = "elastic-credentials", key = "kibana-password" } } }
+                  { name = "ELASTICSEARCH_PASSWORD", valueFrom = { secretKeyRef = { name = "elastic-credentials", key = "kibana-password" } } },
+                  { name = "ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES", value = "config/certs/ca.crt" },
+                  { name = "SERVER_SSL_ENABLED", value = "true" },
+                  { name = "SERVER_SSL_CERTIFICATE", value = "config/certs/tls.crt" },
+                  { name = "SERVER_SSL_KEY", value = "config/certs/tls.key" },
+                  { name = "SERVER_SSL_CERTIFICATEAUTHORITIES", value = "config/certs/ca.crt" }
                 ],
                 ports = [{ containerPort = 5601 }],
+                volumeMounts = [
+                  { name = "certs", mountPath = "/usr/share/kibana/config/certs", readOnly = true }
+                ],
                 resources = { requests = { memory = "512Mi", cpu = "250m" }, limits = { memory = "1Gi", cpu = "500m" } }
               }
+            ],
+            volumes = [
+              { name = "certs", secret = { secretName = "kibana-certs" } }
             ]
           }
         }
