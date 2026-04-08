@@ -15,8 +15,10 @@ If you're interested in more details regarding this project and what to do once 
 3. Change into the `elastic-container/` folder
 4. Change the default password of `changeme` in the `.env` file (don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html))  
 5. Bulk enable pre-built detection rules by OS in the `.env` file (not required, see usage below)
-6. Make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
-7. Execute the `elastic-container.sh` shell script with the start argument `./elastic-container.sh start`
+6. If you're on Linux/MacOS, make the `elastic-container.sh` shell script executable by running `chmod +x elastic-container.sh`
+7. Start the stack:
+  - Linux/MacOS: `./elastic-container.sh start`
+  - Windows PowerShell: `.\elastic-container.ps1 start`
 8. Wait for the prompt to tell you to browse to https://localhost:5601 \
 (You may be presented a browser warning due to the self-signed certificates. You can type `thisisnotsafe` or click to proceed after which you will be directed to the Elastic log in screen)
 
@@ -24,13 +26,13 @@ If you're interested in more details regarding this project and what to do once 
 
 ### Operating System: 
 
-- Linux or MacOS 
+- Linux or MacOS, or Windows 10/11 (PowerShell + Docker Desktop)
 
 ### Prerequisites: 
 
 - [Docker suite](https://docs.docker.com/get-docker/), [jq](https://stedolan.github.io/jq/download/), [curl](https://curl.se/download.html), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if your'e on MacOS
+You can use the links above, the Linux package install commands below, or [Homebrew](https://brew.sh/) if you're on MacOS
 
 **MacOS:**
 ```
@@ -74,11 +76,31 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 Once the Docker suite is installed run `sudo service docker start` to start it.
 
+**Windows 10/11 (PowerShell + Docker Desktop):**
+Install Docker Desktop and make sure it is running.
+
+Confirm these work in PowerShell:
+```powershell
+docker version
+docker compose verison
+```
+
+PowerShell launcher should use built-in `curl.exe` that ships with Windows, so `jq` and WSL are not required for the native Windows path.
+
+If script execution is blocked by your session, run:
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+
+
 ## Usage
 
 This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change the password in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying). Don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) 
 
 This should not be Internet exposed or used in a production environment.
+
+**Windows note:** on Windows, use `.\elastic-container.ps1 <action>` anywhere this README currently shows `./elastic-container.sh <action>`
 
 ### Enable Pre-Built Detection Rules
 
@@ -232,7 +254,7 @@ If you want to use different Elastic Stack versions, you can change those as wel
 
 ### Increase JVM Heap Size
 
-The default heap size is 512M which may be insufficent in some cases. In that case we can change the heap size by editing `docker-compose.yml` and passing `ES_JAVA_OPTS` environment variable to elasticsearch container. 
+The default heap size is 512M which may be insufficient in some cases. In that case we can change the heap size by editing `docker-compose.yml` and passing `ES_JAVA_OPTS` environment variable to elasticsearch container. 
 
 ```yml
   elasticsearch:
