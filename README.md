@@ -8,6 +8,9 @@ If you're interested in more details regarding this project and what to do once 
 
 [![elastic-container.png](https://i.postimg.cc/J7TpsqKJ/elastic-container.png)](https://postimg.cc/NLH6VR3f)
 
+**Optional:** You can use [Nickel](https://nickel-lang.org/) to generate deployment targets (local Docker, Minikube, AWS EKS, Google GKE) from one config—see [Nickel: generating deployment targets](#nickel-generating-deployment-targets-optional).
+
+
 ## Steps
 
 1. `Git clone` this repo
@@ -251,6 +254,73 @@ The default heap size is 512M which may be insufficent in some cases. In that ca
     environment:
 +     - ES_JAVA_OPTS=-Xmx1g -Xms1g
 ```
+
+## Nickel: generating deployment targets (optional)
+
+You can use [Nickel](https://nickel-lang.org/) to generate deployment configs from a single source of truth. This is **optional** and does not replace the existing `.env` + `docker-compose.yml` + `elastic-container.sh` workflow. All original functionality remains; Nickel adds the ability to target local Docker, Minikube, AWS (EKS), and Google Cloud (GKE) from one config.
+
+### Prerequisites
+
+- **Docker** (to run Nickel without installing it), or [install Nickel](https://nickel-lang.org/getting-started/) (Nix, Cargo, or Homebrew).
+- For generating `.env` from Nickel: **jq**.
+
+To run Nickel via Docker (no local install):
+
+```bash
+docker run --rm ghcr.io/tweag/nickel:1.10.0 export --help
+```
+
+### Config and targets
+
+- **`nickel/config.ncl`** – Shared configuration (passwords, versions, ports, etc.). Same concepts as `.env`; you can override any field from the CLI.
+- **`nickel/targets/local-docker.ncl`** – Exports the config as a record; use to generate a `.env` file.
+- **`nickel/targets/minikube.ncl`** – Kubernetes manifests for Minikube (single YAML with a `List` of resources).
+- **`nickel/targets/aws.ncl`** – Kubernetes manifests for AWS EKS.
+- **`nickel/targets/gcp.ncl`** – Kubernetes manifests for Google Cloud GKE.
+
+### Generate artifacts
+
+From the repo root, use the helper script (it runs Nickel via Docker and, for `local-docker`, converts JSON to `.env`):
+
+```bash
+chmod +x scripts/nickel-export.sh
+
+# Local Docker: print .env-style output to stdout
+./scripts/nickel-export.sh local-docker
+
+# Local Docker: write .env into a directory (e.g. generated/.env)
+./scripts/nickel-export.sh local-docker generated
+
+# Minikube: write generated/minikube/stack.yaml
+./scripts/nickel-export.sh minikube generated/minikube
+
+# AWS (EKS): write generated/aws/stack.yaml
+./scripts/nickel-export.sh aws generated/aws
+
+# GCP (GKE): write generated/gcp/stack.yaml
+./scripts/nickel-export.sh gcp generated/gcp
+```
+
+To use Nickel directly (e.g. if Nickel is installed, or with Docker and a bind-mount):
+
+```bash
+# From repo root; Docker must see the repo (e.g. bind-mount)
+docker run --rm -v "$(pwd):/work" -w /work ghcr.io/tweag/nickel:1.10.0 export nickel/targets/local-docker.ncl --format json
+docker run --rm -v "$(pwd):/work" -w /work ghcr.io/tweag/nickel:1.10.0 export nickel/targets/minikube.ncl --format yaml
+```
+
+Override config from the CLI (after `--`):
+
+```bash
+docker run --rm -v "$(pwd):/work" -w /work ghcr.io/tweag/nickel:1.10.0 export nickel/targets/local-docker.ncl --format json -- ELASTIC_PASSWORD=\"mysecret\" STACK_VERSION=\"8.14.0\"
+```
+
+### Using generated output
+
+- **Local Docker** – After generating `.env` (e.g. `./scripts/nickel-export.sh local-docker generated`), copy `generated/.env` to `.env` if you want to use it with the existing workflow, then run `./elastic-container.sh start` as usual. Or keep using your current `.env`; Nickel is only an optional source.
+- **Minikube / AWS / GCP** – The K8s manifests enable TLS. Run `./scripts/generate-k8s-tls-certs.sh` once to create the TLS secrets, then apply the stack (e.g. `kubectl apply -f generated/minikube/stack.yaml`). See [nickel/README.md](nickel/README.md) for full steps and access via **https://** (accept the self-signed cert in the browser).
+
+The Kubernetes targets produce an Elasticsearch + Kibana stack with TLS and credential secrets. Use them as a starting point and adapt to your cluster (storage, ingress, secrets management).
 
 ## Automating
 
