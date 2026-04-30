@@ -75,6 +75,42 @@ Please follow the [Docker installation instructions](https://docs.docker.com/eng
 
 Once the Docker suite is installed run `sudo service docker start` to start it.
 
+See the following [WSL 2 networking](#wsl-2-networking) section for how Windows and the containerized stack reach each other (ports, `localhost`, TLS, and Fleet), otherwise continue to [Usage](#usage).  
+
+### WSL 2 networking
+
+When you run this project inside **WSL 2**, Docker publishes Elasticsearch, Kibana, and Fleet on the ports defined in `.env` (`ES_PORT`, `KIBANA_PORT`, `FLEET_PORT`). Those listeners are inside the WSL virtual machine. **Windows** and **WSL** are not the same network namespace, so URLs and hostnames depend on which direction traffic flows.
+
+#### Reaching the Elastic stack from the Windows host
+
+Use these endpoints from browsers, scripts, or other apps **on Windows**:
+
+1. **Try `localhost` first** — e.g. `https://localhost:5601` (Kibana), `https://localhost:9200` (Elasticsearch), `https://localhost:8220` (Fleet). WSL 2 often forwards published container ports to Windows `localhost`.
+2. **If `localhost` fails** — use the WSL instance’s IP. From PowerShell: `(wsl hostname -I).Trim().Split()[0]`, or from WSL: `hostname -I` (first address). Then use `https://<that-ip>:5601` (and the same pattern for other ports).
+
+**TLS:** Stack certificates are issued for `localhost` and related names, not arbitrary IPs. Connecting with **`https://localhost:...`** from Windows usually matches the certificate. Connecting by **WSL IP** can trigger certificate hostname warnings unless you adjust verification or regenerate certs.
+
+**Optional WSL settings:** You do not have to change WSL for this to work. On Windows 11, [mirrored networking](https://learn.microsoft.com/en-us/windows/wsl/networking#mirrored-mode-networking) in `%UserProfile%\.wslconfig` can make `localhost` behavior more predictable:
+
+```ini
+[wsl2]
+networkingMode=mirrored
+```
+
+After editing, run `wsl --shutdown` and open WSL again.
+
+**Fleet and Elastic Agent:** On start, `elastic-container.sh` discovers a host IP (via `hostname -I` on Linux) and uses it in Fleet output and Fleet Server URLs so agents can reach the stack. That value is typically the **WSL NIC IP**, not `127.0.0.1`. Agents running **on Windows** may need a URL that resolves from Windows (`localhost` or the WSL IP); align that with TLS expectations (fingerprint / verification settings as documented for your agent version).
+
+The `LOCAL_KBN_URL` and `LOCAL_ES_URL` entries in `.env` (`127.0.0.1`) are for **curl inside WSL** during setup, not a requirement for how Windows clients connect.
+
+#### Reaching a Windows-hosted service from the Elastic stack
+
+If a service listens on the **Windows** host (for example port `1234`) and something in the stack (a connector, webhook, or other outbound HTTP client) must call it:
+
+1. **Bind the Windows app on all interfaces** — If it listens only on `127.0.0.1`, WSL and Docker cannot reach it. Bind to `0.0.0.0` or the appropriate non-loopback interface.
+2. **Docker Desktop on Windows (WSL 2 backend)** — From containers, the Windows machine is usually reachable as **`host.docker.internal`**, e.g. `http://host.docker.internal:1234`. If name resolution fails, add `extra_hosts` for your service in `docker-compose.yml` (see [Docker extra_hosts](https://docs.docker.com/compose/compose-file/compose-file-v3/#extra_hosts)).
+3. **Docker Engine only inside WSL** (no Docker Desktop) — `host.docker.internal` / `host-gateway` typically refers to the **Linux WSL instance**, not Windows. Use the **Windows host IP** as seen from WSL — often the `nameserver` address in `/etc/resolv.conf` inside the distro (e.g. `172.x.x.x`). Use `http://<that-ip>:1234` in stack configuration, and allow the port in **Windows Defender Firewall** for the WSL / Hyper-V network if needed.
+
 ## Usage
 
 This uses default creds of `elastic:changeme` and is intended purely for security research on a local Elastic stack. [Change the password in the `.env` file](https://github.com/peasead/elastic-container/blob/main/README.md#modifying). Don't change the `elastic` username, it's a [required built-in user](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) 
